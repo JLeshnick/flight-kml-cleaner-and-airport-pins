@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,26 +10,61 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="airports_db.js"></script>
   <style>
+    /* -------------------------------------------------------------
+       DAISYUI INSPIRED THEMING & CORE STYLES
+       ------------------------------------------------------------- */
     :root {
-      --bg-dark: #090d16;
-      --bg-card: #131b2e;
-      --bg-card-hover: #1a253e;
-      --bg-input: #0d1322;
-      --border-color: #23314d;
-      --border-focus: #38bdf8;
+      /* Dark Theme Tokens (Default) */
+      --bg-base: #0f172a;
+      --bg-surface: #1e293b;
+      --bg-surface-hover: #2d3d54;
+      --bg-input: #0b1120;
+      --border: #334155;
+      --border-focus: #0ea5e9;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --accent-blue: #38bdf8;
-      --accent-blue-hover: #0284c7;
-      --accent-cyan: #06b6d4;
-      --accent-green: #34d399;
-      --accent-amber: #fbbf24;
-      --accent-red: #f87171;
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 18px;
-      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      
+      --primary: #0ea5e9;
+      --primary-hover: #0284c7;
+      --primary-content: #ffffff;
+      
+      --secondary: #6366f1;
+      --secondary-hover: #4f46e5;
+      
+      --success: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.12);
+      
+      --warning: #f59e0b;
+      --error: #ef4444;
+      
+      --radius-btn: 10px;
+      --radius-card: 16px;
+      --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
       --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="light"] {
+      /* Light Theme Tokens */
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-hover: #f1f5f9;
+      --bg-input: #f1f5f9;
+      --border: #e2e8f0;
+      --border-focus: #0284c7;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --primary-content: #ffffff;
+      
+      --secondary: #4f46e5;
+      --secondary-hover: #4338ca;
+      
+      --success: #059669;
+      --success-bg: rgba(5, 150, 105, 0.1);
+      
+      --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
     }
 
     * {
@@ -40,43 +75,113 @@
 
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-dark);
+      background-color: var(--bg-base);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       line-height: 1.6;
-      background-image: 
-        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.06) 0%, transparent 40%);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* -------------------------------------------------------------
+       NAVBAR / HEADER (DaisyUI Style)
+       ------------------------------------------------------------- */
+    .navbar {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .navbar-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .brand-icon {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* Theme Controller Switch (DaisyUI Style) */
+    .theme-toggle-btn {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius-btn);
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: var(--transition);
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--primary);
     }
 
     /* Container */
     .container {
-      max-width: 1080px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 2rem 1.5rem;
+      padding: 2.5rem 1.5rem;
       width: 100%;
       flex: 1;
     }
 
-    /* Header */
-    header {
+    /* Hero Header */
+    .hero-header {
       text-align: center;
       margin-bottom: 2.5rem;
     }
 
-    .badge {
+    .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.35rem 0.85rem;
+      padding: 0.35rem 0.9rem;
       border-radius: 9999px;
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      color: var(--accent-blue);
+      background: var(--success-bg);
+      border: 1px solid var(--success);
+      color: var(--success);
       font-size: 0.825rem;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 1rem;
     }
 
@@ -85,43 +190,39 @@
       font-weight: 800;
       letter-spacing: -0.03em;
       margin-bottom: 0.75rem;
-      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
 
-    header p {
+    .hero-header p {
       color: var(--text-muted);
       font-size: 1.05rem;
       max-width: 680px;
       margin: 0 auto;
     }
 
-    /* Nav Tabs */
-    .nav-tabs {
+    /* DaisyUI Tabs Segmented Control */
+    .tabs-boxed {
       display: flex;
       justify-content: center;
-      gap: 0.75rem;
-      margin-bottom: 2rem;
-      background: var(--bg-card);
+      gap: 0.5rem;
+      background: var(--bg-surface);
       padding: 0.4rem;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      max-width: 520px;
+      margin: 0 auto 2.5rem auto;
+      box-shadow: var(--shadow-card);
     }
 
-    .tab-btn {
+    .tab {
       flex: 1;
       padding: 0.75rem 1.25rem;
       border: none;
       background: transparent;
       color: var(--text-muted);
       font-family: inherit;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.95rem;
-      border-radius: var(--radius-sm);
+      border-radius: 10px;
       cursor: pointer;
       transition: var(--transition);
       display: flex;
@@ -130,24 +231,29 @@
       gap: 0.5rem;
     }
 
-    .tab-btn:hover {
+    .tab:hover {
       color: var(--text-main);
     }
 
-    .tab-btn.active {
-      background: var(--accent-blue);
-      color: #090d16;
-      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.35);
+    .tab.tab-active {
+      background: var(--primary);
+      color: var(--primary-content);
+      box-shadow: 0 4px 14px rgba(14, 165, 233, 0.3);
     }
 
-    /* Tab Content Cards */
+    /* DaisyUI Cards */
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      transition: var(--transition);
+    }
+
     .tab-pane {
       display: none;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-      box-shadow: var(--shadow);
       animation: fadeIn 0.25s ease-out;
     }
 
@@ -160,47 +266,46 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .tool-title {
-      font-size: 1.4rem;
-      font-weight: 700;
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 800;
       margin-bottom: 0.5rem;
       display: flex;
       align-items: center;
       gap: 0.6rem;
     }
 
-    .tool-description {
+    .card-subtitle {
       color: var(--text-muted);
       font-size: 0.95rem;
       margin-bottom: 1.75rem;
     }
 
-    /* Dropzone */
+    /* Dropzone Element */
     .dropzone {
-      border: 2px dashed var(--border-color);
-      border-radius: var(--radius-md);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-card);
       padding: 2.5rem 1.5rem;
       text-align: center;
       cursor: pointer;
       transition: var(--transition);
       background: var(--bg-input);
-      position: relative;
     }
 
     .dropzone:hover, .dropzone.dragover {
-      border-color: var(--accent-blue);
-      background: rgba(56, 189, 248, 0.04);
+      border-color: var(--primary);
+      background: rgba(14, 165, 233, 0.05);
     }
 
     .dropzone-icon {
       font-size: 2.5rem;
       margin-bottom: 0.75rem;
-      color: var(--accent-blue);
+      color: var(--primary);
     }
 
     .dropzone h3 {
       font-size: 1.1rem;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 0.35rem;
     }
 
@@ -213,54 +318,53 @@
       display: none;
     }
 
-    /* Form Controls */
-    .form-group {
-      margin-bottom: 1.25rem;
+    /* Form Inputs */
+    .form-control {
+      margin-bottom: 1.5rem;
     }
 
-    .form-label {
+    .label {
       display: block;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.9rem;
       margin-bottom: 0.5rem;
-      color: var(--text-main);
     }
 
-    .input-text {
+    .input {
       width: 100%;
       padding: 0.85rem 1rem;
       background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-btn);
       color: var(--text-main);
       font-family: inherit;
       font-size: 0.95rem;
       transition: var(--transition);
     }
 
-    .input-text:focus {
+    .input:focus {
       outline: none;
       border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
     }
 
-    .input-hint {
+    .label-hint {
       font-size: 0.8rem;
       color: var(--text-muted);
       margin-top: 0.35rem;
     }
 
-    /* Buttons */
+    /* DaisyUI Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
       padding: 0.85rem 1.5rem;
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-btn);
       border: none;
       font-family: inherit;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.95rem;
       cursor: pointer;
       transition: var(--transition);
@@ -268,55 +372,71 @@
     }
 
     .btn-primary {
-      background: var(--accent-blue);
-      color: #090d16;
+      background: var(--primary);
+      color: var(--primary-content);
     }
 
     .btn-primary:hover {
-      background: var(--accent-blue-hover);
-      color: #ffffff;
-      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+      background: var(--primary-hover);
+      box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
     }
 
-    .btn-secondary {
-      background: var(--bg-input);
+    .btn-outline {
+      background: transparent;
       color: var(--text-main);
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--border);
     }
 
-    .btn-secondary:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--accent-blue);
+    .btn-outline:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--primary);
     }
 
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      box-shadow: none !important;
+    .btn-block {
+      width: 100%;
     }
 
-    /* Output Results List */
-    .results-section {
-      margin-top: 2rem;
+    /* DaisyUI Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
     }
 
+    .badge-primary {
+      background: rgba(14, 165, 233, 0.15);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .badge-success {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+
+    /* Results Card & Stats */
     .results-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
     }
 
     .results-list {
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 0.85rem;
     }
 
     .result-card {
       background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-btn);
       padding: 1rem 1.25rem;
       display: flex;
       align-items: center;
@@ -327,7 +447,7 @@
 
     .result-info h4 {
       font-size: 0.95rem;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 0.25rem;
       word-break: break-all;
     }
@@ -339,15 +459,7 @@
       color: var(--text-muted);
     }
 
-    .savings-badge {
-      color: var(--accent-green);
-      font-weight: 700;
-      background: rgba(52, 211, 153, 0.1);
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
-    }
-
-    /* Airport Pins Preview Cards */
+    /* Airport Chips Preview */
     .airport-chips {
       display: flex;
       flex-wrap: wrap;
@@ -356,10 +468,10 @@
     }
 
     .airport-chip {
-      background: rgba(56, 189, 248, 0.08);
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      border-radius: var(--radius-sm);
-      padding: 0.4rem 0.75rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-btn);
+      padding: 0.45rem 0.85rem;
       font-size: 0.85rem;
       display: flex;
       align-items: center;
@@ -368,45 +480,71 @@
 
     .airport-chip-code {
       font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      color: var(--accent-blue);
+      font-weight: 800;
+      color: var(--primary);
     }
 
     .airport-chip-name {
       color: var(--text-muted);
     }
 
-    /* How to Use Section */
-    .info-section {
+    /* -------------------------------------------------------------
+       GOOGLE EARTH SHOWCASE GALLERY (DaisyUI Carousel/Card Style)
+       ------------------------------------------------------------- */
+    .showcase-section {
       margin-top: 3rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
     }
 
-    .info-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 1.5rem;
-    }
-
-    .info-card h3 {
-      font-size: 1.1rem;
-      margin-bottom: 0.75rem;
+    .showcase-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
 
-    .info-card ol {
-      padding-left: 1.2rem;
-      color: var(--text-muted);
-      font-size: 0.9rem;
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
     }
 
-    .info-card li {
-      margin-bottom: 0.4rem;
+    .showcase-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      transition: var(--transition);
+    }
+
+    .showcase-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+    }
+
+    .showcase-img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .showcase-body {
+      padding: 1.25rem;
+    }
+
+    .showcase-body h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    .showcase-body p {
+      color: var(--text-muted);
+      font-size: 0.875rem;
     }
 
     /* Footer */
@@ -415,135 +553,163 @@
       padding: 2.5rem 1.5rem;
       color: var(--text-muted);
       font-size: 0.875rem;
-      border-top: 1px solid var(--border-color);
+      border-top: 1px solid var(--border);
       margin-top: auto;
+      background: var(--bg-surface);
     }
 
     footer a {
-      color: var(--accent-blue);
+      color: var(--primary);
       text-decoration: none;
+      font-weight: 600;
     }
 
     footer a:hover {
       text-decoration: underline;
     }
 
-    /* Responsive */
     @media (max-width: 640px) {
       h1 { font-size: 1.8rem; }
-      .container { padding: 1.25rem 1rem; }
-      .tab-pane { padding: 1.25rem; }
+      .container { padding: 1.5rem 1rem; }
+      .card { padding: 1.25rem; }
       .result-card { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="#" class="brand">
+        <div class="brand-icon">✈️</div>
+        <span>Flight KML Tools</span>
+      </a>
+
+      <div class="navbar-actions">
+        <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">
+          <span id="theme-icon">🌙</span>
+          <span id="theme-text">Dark Mode</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
   <div class="container">
-    <header>
-      <div class="badge">
+    <div class="hero-header">
+      <div class="hero-badge">
         <span>🔒 100% Client-Side Privacy</span>
         <span>•</span>
-        <span>Zero Data Server Uploads</span>
+        <span>Zero Server Uploads</span>
       </div>
-      <h1>Flight KML Tools</h1>
-      <p>Optimize Flightradar24 & FlightAware flight tracks and generate custom airport pushpin maps for Google Earth instantly.</p>
-    </header>
+      <h1>Google Earth Flight KML Suite</h1>
+      <p>Clean Flightradar24 tracks with date/time UTC tags and generate custom FlightAware airport pin maps instantly.</p>
+    </div>
 
-    <div class="nav-tabs">
-      <button class="tab-btn active" id="tab-cleaner-btn" onclick="switchTab('cleaner')">
+    <!-- DAISYUI TABS -->
+    <div class="tabs-boxed">
+      <button class="tab tab-active" id="tab-cleaner-btn" onclick="switchTab('cleaner')">
         ✈️ KML Track Optimizer
       </button>
-      <button class="tab-btn" id="tab-pins-btn" onclick="switchTab('pins')">
+      <button class="tab" id="tab-pins-btn" onclick="switchTab('pins')">
         📍 Airport Pin Generator
       </button>
     </div>
 
     <!-- TAB 1: KML TRACK CLEANER -->
     <div class="tab-pane active" id="tab-cleaner">
-      <div class="tool-title">
-        <span>✈️</span> Flightradar24 / FlightAware KML Route Cleaner
-      </div>
-      <div class="tool-description">
-        Flightradar24 exports include thousands of individual timestamp placemarks in a <code>Route</code> folder, causing Google Earth to lag severely. This tool strips out the high-density points while keeping the continuous 3D flight path, metadata, and styling.
-      </div>
-
-      <div class="dropzone" id="cleaner-dropzone" onclick="document.getElementById('cleaner-file-input').click()">
-        <div class="dropzone-icon">📁</div>
-        <h3>Drop Flightradar24 / FlightAware KML files here</h3>
-        <p>or click to browse from your computer (Multiple files supported)</p>
-        <input type="file" id="cleaner-file-input" class="file-input" accept=".kml" multiple onchange="handleCleanerFiles(this.files)">
-      </div>
-
-      <div class="results-section" id="cleaner-results" style="display: none;">
-        <div class="results-header">
-          <h3>Cleaned Files</h3>
-          <button class="btn btn-secondary" id="download-all-btn" onclick="downloadAllCleanedFiles()">
-            ⬇️ Download All Cleaned KMLs
-          </button>
+      <div class="card">
+        <div class="card-title">
+          <span>✈️</span> Flightradar24 / FlightAware KML Route Cleaner
         </div>
-        <div class="results-list" id="cleaner-results-list"></div>
+        <div class="card-subtitle">
+          Strips out thousands of high-density <code>Route</code> placemarks to eliminate Google Earth lag, while tagging each flight folder with flight number, date, and <strong>UTC departure time</strong>.
+        </div>
+
+        <div class="dropzone" id="cleaner-dropzone" onclick="document.getElementById('cleaner-file-input').click()">
+          <div class="dropzone-icon">📁</div>
+          <h3>Drop Flightradar24 / FlightAware KML files here</h3>
+          <p>or click to browse from your computer (Multiple files supported)</p>
+          <input type="file" id="cleaner-file-input" class="file-input" accept=".kml" multiple onchange="handleCleanerFiles(this.files)">
+        </div>
+
+        <div id="cleaner-results" style="display: none; margin-top: 2rem;">
+          <div class="results-header">
+            <h3>Cleaned Flight Tracks</h3>
+            <button class="btn btn-outline" id="download-all-btn" onclick="downloadAllCleanedFiles()">
+              ⬇️ Download All Cleaned KMLs
+            </button>
+          </div>
+          <div class="results-list" id="cleaner-results-list"></div>
+        </div>
       </div>
     </div>
 
     <!-- TAB 2: AIRPORT PIN GENERATOR -->
     <div class="tab-pane" id="tab-pins">
-      <div class="tool-title">
-        <span>📍</span> Google Earth Airport Pin Generator
-      </div>
-      <div class="tool-description">
-        Generate custom FlightAware-style pushpin Placemarks for any airport by typing IATA or ICAO codes, or scan your flight KML files to detect visited airports automatically.
-      </div>
-
-      <div class="form-group">
-        <label class="form-label" for="airport-codes-input">Airport Codes (IATA or ICAO)</label>
-        <input type="text" id="airport-codes-input" class="input-text" placeholder="e.g. BNA, DFW, LHR, FCO, CIA" oninput="renderAirportPreview()">
-        <div class="input-hint">Enter codes separated by spaces or commas. 29,000+ global airports supported.</div>
-      </div>
-
-      <div class="form-group" style="margin-top: 1.5rem;">
-        <label class="form-label">Or Scan Visited Airports from Existing Flight KML Files</label>
-        <div class="dropzone" id="scan-dropzone" onclick="document.getElementById('scan-file-input').click()" style="padding: 1.5rem;">
-          <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🔍</div>
-          <div style="font-size: 0.9rem; font-weight: 600;">Drop flight KML files to scan for visited airport codes</div>
-          <input type="file" id="scan-file-input" class="file-input" accept=".kml" multiple onchange="handleScanFiles(this.files)">
+      <div class="card">
+        <div class="card-title">
+          <span>📍</span> Google Earth Airport Pin Generator
         </div>
-      </div>
+        <div class="card-subtitle">
+          Generate styled pushpin Placemarks matching FlightAware formatting for any airport by typing IATA or ICAO codes, or scan your flight KML files automatically.
+        </div>
 
-      <div id="airport-preview-container" style="margin-top: 1.5rem; display: none;">
-        <div class="form-label" id="preview-count-label">Matched Airports</div>
-        <div class="airport-chips" id="airport-chips-list"></div>
-      </div>
+        <div class="form-control">
+          <label class="label" for="airport-codes-input">Airport Codes (IATA or ICAO)</label>
+          <input type="text" id="airport-codes-input" class="input" placeholder="e.g. BNA, DFW, LHR, FCO, CIA" oninput="renderAirportPreview()">
+          <div class="label-hint">Enter codes separated by spaces or commas. 29,000+ global airports supported offline.</div>
+        </div>
 
-      <div style="margin-top: 2rem;">
-        <button class="btn btn-primary" id="generate-pins-btn" onclick="generateAirportPins()" style="width: 100%;">
-          📍 Download Airport Pin KML
-        </button>
+        <div class="form-control" style="margin-top: 1.5rem;">
+          <label class="label">Or Scan Visited Airports from Existing Flight KML Files</label>
+          <div class="dropzone" id="scan-dropzone" onclick="document.getElementById('scan-file-input').click()" style="padding: 1.5rem;">
+            <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🔍</div>
+            <div style="font-size: 0.9rem; font-weight: 700;">Drop flight KML files to scan for visited airport codes</div>
+            <input type="file" id="scan-file-input" class="file-input" accept=".kml" multiple onchange="handleScanFiles(this.files)">
+          </div>
+        </div>
+
+        <div id="airport-preview-container" style="margin-top: 1.5rem; display: none;">
+          <div class="label" id="preview-count-label">Matched Airports</div>
+          <div class="airport-chips" id="airport-chips-list"></div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+          <button class="btn btn-primary btn-block" id="generate-pins-btn" onclick="generateAirportPins()">
+            📍 Download Airport Pin KML
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- HOW TO USE -->
-    <div class="info-section">
-      <div class="info-card">
-        <h3>🌍 How to Import into Google Earth</h3>
-        <ol>
-          <li>Open <strong>Google Earth Web</strong> (earth.google.com) or <strong>Google Earth Pro</strong> desktop app.</li>
-          <li>In Google Earth Web, click <strong>Projects</strong> ➔ <strong>New Project</strong> ➔ <strong>Import KML file from computer</strong>.</li>
-          <li>Select your downloaded cleaned KML flight path or Airport Pin KML file.</li>
-        </ol>
+    <!-- SHOWCASE GALLERY SECTION -->
+    <div class="showcase-section">
+      <div class="showcase-title">
+        <span>📸</span> Google Earth Visual Previews
       </div>
+      <div class="showcase-grid">
+        <div class="showcase-card">
+          <img src="images/google_earth_map_overview.jpeg" alt="Google Earth Flight Routes & Airport Pins Preview" class="showcase-img">
+          <div class="showcase-body">
+            <h4>🗺️ Flight Routes & Airport Pins</h4>
+            <p>Cleaned 3D flight paths paired with styled FlightAware airport pushpins imported into Google Earth.</p>
+          </div>
+        </div>
 
-      <div class="info-card">
-        <h3>💡 Pro Tips</h3>
-        <ol>
-          <li><strong>Cleaned Files:</strong> Shrinks Flightradar24 exports by up to 95%, removing map clutter and smooth rendering.</li>
-          <li><strong>Single Airport Pins:</strong> Single airport KMLs import as direct items in Google Earth without generic container folder wrappers.</li>
-          <li><strong>Instant Airport Database:</strong> Bundled offline database resolves ~29,000 global airports instantly.</li>
-        </ol>
+        <div class="showcase-card">
+          <img src="images/airport_pins_sample.jpeg" alt="Google Earth Airport Pins Preview" class="showcase-img">
+          <div class="showcase-body">
+            <h4>📍 Visited Airport Map</h4>
+            <p>Interactive pushpins showing full airport names, locations, and live FlightAware activity balloon links.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- FOOTER -->
   <footer>
     <p>Flight KML Cleaner & Airport Pin Generator — Built for flight enthusiasts, frequent flyers, and pilots.</p>
     <p style="margin-top: 0.5rem;">
@@ -552,13 +718,42 @@
   </footer>
 
   <script>
+    // -------------------------------------------------------------
+    // LIGHT / DARK THEME TOGGLE (DaisyUI Style)
+    // -------------------------------------------------------------
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+      updateThemeBtnUI();
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateThemeBtnUI();
+    }
+
+    function updateThemeBtnUI() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      document.getElementById('theme-icon').textContent = isLight ? '☀️' : '🌙';
+      document.getElementById('theme-text').textContent = isLight ? 'Light Mode' : 'Dark Mode';
+    }
+
+    initTheme();
+
     // Tab Switcher
     function switchTab(tabName) {
       document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(el => el.classList.remove('tab-active'));
       
       document.getElementById('tab-' + tabName).classList.add('active');
-      document.getElementById('tab-' + tabName + '-btn').classList.add('active');
+      document.getElementById('tab-' + tabName + '-btn').classList.add('tab-active');
     }
 
     // -------------------------------------------------------------
@@ -566,7 +761,6 @@
     // -------------------------------------------------------------
     let cleanedFilesData = [];
 
-    // Drag and drop setup for Cleaner
     const cleanerDropzone = document.getElementById('cleaner-dropzone');
     ['dragenter', 'dragover'].forEach(eventName => {
       cleanerDropzone.addEventListener(eventName, (e) => {
@@ -666,19 +860,19 @@
           routeFound
         });
 
-        // Render card
+        // Render result card
         const card = document.createElement('div');
         card.className = 'result-card';
         card.innerHTML = `
           <div class="result-info">
-            <h4>${file.name}</h4>
+            <h4>${outputName}</h4>
             <div class="result-meta">
               <span>${origSizeKB.toFixed(1)} KB ➔ ${newSizeKB.toFixed(1)} KB</span>
-              ${routeFound ? `<span class="savings-badge">Saved ${pctSaved}%</span>` : `<span style="color: var(--text-muted);">No Route folder found</span>`}
+              ${routeFound ? `<span class="badge badge-success">Saved ${pctSaved}%</span>` : `<span class="badge">No Route folder</span>`}
             </div>
           </div>
           <div>
-            <button class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;" onclick="triggerDownload('${encodeURIComponent(outputName)}', ${cleanedFilesData.length - 1})">
+            <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;" onclick="triggerDownload('${encodeURIComponent(outputName)}', ${cleanedFilesData.length - 1})">
               ⬇️ Download KML
             </button>
           </div>
@@ -712,7 +906,6 @@
       });
     }
 
-
     // -------------------------------------------------------------
     // TOOL 2: AIRPORT PIN GENERATOR LOGIC
     // -------------------------------------------------------------
@@ -728,7 +921,6 @@
         return;
       }
 
-      // Backup fetch if window.AIRPORTS_DATA wasn't loaded synchronously
       const AIRPORT_DATA_URL = "https://raw.githubusercontent.com/mwgg/Airports/master/airports.json";
       fetch(AIRPORT_DATA_URL)
         .then(resp => resp.json())
@@ -871,7 +1063,7 @@ ${placemarksXml.join("\n")}
           const nameStr = ap.name || '';
           chip.innerHTML = `<span class="airport-chip-code">📍 ${code}</span> <span class="airport-chip-name">${nameStr} (${ap.city || ap.country})</span>`;
         } else {
-          chip.innerHTML = `<span class="airport-chip-code" style="color: var(--accent-red)">⚠️ ${code}</span> <span class="airport-chip-name">Not found</span>`;
+          chip.innerHTML = `<span class="airport-chip-code" style="color: var(--error)">⚠️ ${code}</span> <span class="airport-chip-name">Not found</span>`;
         }
         chipsList.appendChild(chip);
       });
@@ -928,7 +1120,6 @@ ${placemarksXml.join("\n")}
       URL.revokeObjectURL(url);
     }
 
-    // Drag and drop scanning for KML files in Pin Generator
     async function handleScanFiles(files) {
       if (!files || files.length === 0 || !airportDB) return;
 
@@ -949,7 +1140,6 @@ ${placemarksXml.join("\n")}
       }
 
       if (detectedCodes.size > 0) {
-        const currentInput = document.getElementById('airport-codes-input').value;
         const existingCodes = parseInputCodes();
         const allCodes = new Set([...existingCodes, ...detectedCodes]);
         document.getElementById('airport-codes-input').value = Array.from(allCodes).join(', ');

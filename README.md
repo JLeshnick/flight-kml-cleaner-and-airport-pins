@@ -19,13 +19,13 @@ Run both tools directly in your browser without installing Python or terminal co
 
 ---
 
-### 📸 Web App Previews
+### 📸 Google Earth Previews
 
-![Web App KML Route Cleaner Interface](docs/images/web_app_cleaner.png)
-*Example: Drag-and-drop KML route cleaner with instant size reduction and date/time folder tagging.*
+![Google Earth Flight Routes & Airport Pins](images/google_earth_map_overview.jpeg)
+*Example: Clean 3D flight paths paired with styled FlightAware airport pushpins imported into Google Earth.*
 
-![Web App Airport Pin Generator Interface](docs/images/web_app_pins.png)
-*Example: Typing airport codes with live database lookups and automated KML pin generation.*
+![Google Earth Visited Airport Pins Map](images/airport_pins_sample.jpeg)
+*Example: Visited airport pushpins showing airport codes, full names, locations, and live FlightAware activity links.*
 
 ---
 
@@ -42,8 +42,6 @@ Run both tools directly in your browser without installing Python or terminal co
 
 ### 1. Exporting Flight KML Tracks
 
-![Flightradar24 KML Download Button](docs/images/fr24_export_tutorial.png)
-
 #### Exporting from Flightradar24:
 1. Log in to **Flightradar24**.
 2. Go to **My Flightradar24** or search for any historical flight.
@@ -58,12 +56,6 @@ Run both tools directly in your browser without installing Python or terminal co
 ---
 
 ### 2. Importing Cleaned KMLs into Google Earth
-
-![Google Earth Flight Map Overview](docs/images/google_earth_map_overview.png)
-*Example: Clean 3D flight trails with date/time tags and custom airport pins in Google Earth.*
-
-![Airport Pin Popup Balloon](docs/images/airport_pin_balloon.png)
-*Example: FlightAware-style balloon popup with live flight activity links.*
 
 #### Google Earth Web (Browser):
 1. Open [earth.google.com](https://earth.google.com/web/).
