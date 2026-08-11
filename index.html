@@ -14,44 +14,44 @@
        PICO CSS INSPIRED MINIMALIST & PROFESSIONAL DESIGN SYSTEM
        ------------------------------------------------------------- */
     :root {
-      /* Dark Mode (Default) */
-      --bg-body: #0d1117;
-      --bg-card: #161b22;
-      --bg-input: #0d1117;
-      --bg-hover: #1f242c;
-      --border: #30363d;
-      --border-focus: #58a6ff;
-      --text-main: #c9d1d9;
-      --text-heading: #f0f6fc;
-      --text-muted: #8b949e;
-      --accent: #238636;
-      --accent-hover: #2ea043;
-      --primary: #1f6feb;
-      --primary-hover: #388bfd;
-      --badge-bg: rgba(56, 139, 253, 0.15);
-      --badge-text: #58a6ff;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      /* Dark Mode: Pure Neutral Black & Slate-Free Charcoal */
+      --bg-body: #09090b;
+      --bg-card: #18181b;
+      --bg-input: #09090b;
+      --bg-hover: #27272a;
+      --border: #27272a;
+      --border-focus: #52525b;
+      --text-main: #d4d4d8;
+      --text-heading: #fafafa;
+      --text-muted: #a1a1aa;
+      --accent: #22c55e;
+      --accent-hover: #16a34a;
+      --primary: #fafafa;
+      --primary-hover: #e4e4e7;
+      --badge-bg: #27272a;
+      --badge-text: #fafafa;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
       --radius: 8px;
-      --transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      --transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
     }
 
     [data-theme="light"] {
-      /* Light Mode */
+      /* Light Mode: Pure Crisp White */
       --bg-body: #ffffff;
-      --bg-card: #f6f8fa;
+      --bg-card: #f4f4f5;
       --bg-input: #ffffff;
-      --bg-hover: #eaeef2;
-      --border: #d0d7de;
-      --border-focus: #0969da;
-      --text-main: #24292f;
-      --text-heading: #0f172a;
-      --text-muted: #57606a;
-      --accent: #1a7f37;
-      --accent-hover: #1f883d;
-      --primary: #0969da;
-      --primary-hover: #0860ca;
-      --badge-bg: rgba(9, 105, 218, 0.1);
-      --badge-text: #0969da;
+      --bg-hover: #e4e4e7;
+      --border: #e4e4e7;
+      --border-focus: #a1a1aa;
+      --text-main: #27272a;
+      --text-heading: #09090b;
+      --text-muted: #71717a;
+      --accent: #16a34a;
+      --accent-hover: #15803d;
+      --primary: #09090b;
+      --primary-hover: #27272a;
+      --badge-bg: #e4e4e7;
+      --badge-text: #09090b;
       --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     }
 
@@ -152,6 +152,85 @@
       max-width: 680px;
     }
 
+    /* Image Gallery Showcase (PROMINENT TOP SECTION) */
+    .gallery-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .gallery-header {
+      margin-bottom: 1rem;
+    }
+
+    .gallery-header h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    .gallery-header p {
+      font-size: 0.825rem;
+      color: var(--text-muted);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .gallery-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .gallery-card:hover {
+      border-color: var(--border-focus);
+      transform: translateY(-2px);
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gallery-card .caption {
+      padding: 0.85rem 1rem;
+    }
+
+    .gallery-card h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-bottom: 0.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .gallery-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .zoom-hint {
+      font-size: 0.725rem;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
     /* Minimal Segmented Tab Control */
     .tab-nav {
       display: flex;
@@ -178,8 +257,8 @@
     }
 
     .tab-btn.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
+      color: var(--text-heading);
+      border-bottom-color: var(--text-heading);
     }
 
     /* Panel Content */
@@ -395,55 +474,6 @@
       color: var(--text-muted);
     }
 
-    /* Image Gallery Showcase */
-    .gallery-section {
-      margin-top: 2.5rem;
-    }
-
-    .gallery-section h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--text-heading);
-      margin-bottom: 1rem;
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .gallery-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-
-    .gallery-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      display: block;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .gallery-card .caption {
-      padding: 0.85rem 1rem;
-    }
-
-    .gallery-card h4 {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-heading);
-      margin-bottom: 0.2rem;
-    }
-
-    .gallery-card p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
     /* Footer */
     footer.footer {
       border-top: 1px solid var(--border);
@@ -455,7 +485,7 @@
     }
 
     footer.footer a {
-      color: var(--primary);
+      color: var(--text-heading);
       text-decoration: none;
     }
 
@@ -488,6 +518,36 @@
     <div class="intro">
       <h1>Flight KML Utilities</h1>
       <p>Clean Flightradar24 track logs with UTC date/time tags and generate custom FlightAware airport pin maps for Google Earth. 100% browser-based and client-side private.</p>
+    </div>
+
+    <!-- PROMINENT SHOWCASE GALLERY (CLICKABLE HIGH-RES MAP OUTPUTS) -->
+    <div class="gallery-section">
+      <div class="gallery-header">
+        <h2>Google Earth Output Examples</h2>
+        <p>Click any image to view full high-resolution map output in a new tab</p>
+      </div>
+      <div class="gallery-grid">
+        <a href="images/google_earth_map_overview.jpeg" target="_blank" rel="noopener" class="gallery-card" title="Click to view full image">
+          <img src="images/google_earth_map_overview.jpeg" alt="Google Earth Flight Routes and Airport Pins">
+          <div class="caption">
+            <h4>
+              <span>Flight Tracks & Airport Pins</span>
+              <span class="zoom-hint">Click to enlarge ↗</span>
+            </h4>
+            <p>Cleaned 3D flight lines combined with styled airport pushpins in Google Earth.</p>
+          </div>
+        </a>
+        <a href="images/airport_pins_sample.jpeg" target="_blank" rel="noopener" class="gallery-card" title="Click to view full image">
+          <img src="images/airport_pins_sample.jpeg" alt="Google Earth Visited Airport Pins Map">
+          <div class="caption">
+            <h4>
+              <span>Visited Airport Pushpins</span>
+              <span class="zoom-hint">Click to enlarge ↗</span>
+            </h4>
+            <p>Airport placemarks formatted with full names, locations, and FlightAware balloon links.</p>
+          </div>
+        </a>
+      </div>
     </div>
 
     <!-- TABS -->
@@ -556,27 +616,6 @@
 
         <div style="margin-top: 1.75rem;">
           <button class="btn btn-accent btn-full" onclick="generateAirportPins()">Generate Airport Pin KML</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- SHOWCASE GALLERY -->
-    <div class="gallery-section">
-      <h3>Google Earth Import Examples</h3>
-      <div class="gallery-grid">
-        <div class="gallery-card">
-          <img src="images/google_earth_map_overview.jpeg" alt="Google Earth Flight Routes and Airport Pins">
-          <div class="caption">
-            <h4>Flight Tracks & Airport Pins</h4>
-            <p>Cleaned 3D flight lines combined with styled airport pushpins in Google Earth.</p>
-          </div>
-        </div>
-        <div class="gallery-card">
-          <img src="images/airport_pins_sample.jpeg" alt="Google Earth Visited Airport Pins Map">
-          <div class="caption">
-            <h4>Visited Airport Pushpins</h4>
-            <p>Airport placemarks formatted with full names, locations, and FlightAware balloon links.</p>
-          </div>
         </div>
       </div>
     </div>
