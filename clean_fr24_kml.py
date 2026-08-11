@@ -36,17 +36,49 @@ import glob
 import re
 import argparse
 
-def strip_route_folder(kml_content: str) -> tuple[str, bool]:
+def strip_route_folder(kml_content: str) -> tuple[str, bool, str, str]:
     """
-    Strips the <Folder><name>Route</name>...</Folder> block from KML text.
-    Returns (cleaned_content, route_found).
+    Strips the <Folder><name>Route</name>...</Folder> block from KML text
+    and appends date/time UTC metadata to the KML Document name for Google Earth organization.
+    Returns (cleaned_content, route_found, date_time_tag, file_name_tag).
     """
     pattern = re.compile(r'\s*<Folder>\s*<name>Route</name>.*?</Folder>', re.DOTALL)
-    if not pattern.search(kml_content):
-        return kml_content, False
-    
-    cleaned_content = pattern.sub('', kml_content)
-    return cleaned_content, True
+    route_found = bool(pattern.search(kml_content))
+    cleaned_content = pattern.sub('', kml_content) if route_found else kml_content
+
+    # Extract date & time from <when> timestamp tags
+    iso_match = re.search(r'<when>(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})', kml_content)
+    date_time_tag = ""
+    file_name_tag = ""
+
+    if iso_match:
+        date_part = iso_match.group(1)
+        t1, t2 = iso_match.group(2), iso_match.group(3)
+        date_time_tag = f"{date_part} {t1}:{t2} UTC"
+        file_name_tag = f"{date_part}_{t1}{t2}_UTC"
+    else:
+        date_match = re.search(r'\b(\d{4}-\d{2}-\d{2})\b', kml_content)
+        if date_match:
+            date_part = date_match.group(1)
+            time_match = re.search(r'\b(\d{2}):(\d{2})\b', kml_content)
+            if time_match:
+                t1, t2 = time_match.group(1), time_match.group(2)
+                date_time_tag = f"{date_part} {t1}:{t2} UTC"
+                file_name_tag = f"{date_part}_{t1}{t2}_UTC"
+            else:
+                date_time_tag = f"{date_part} UTC"
+                file_name_tag = f"{date_part}_UTC"
+
+    if date_time_tag:
+        def replace_doc_name(m):
+            name = m.group(1)
+            if "UTC" in name or date_part in name:
+                return m.group(0)
+            return f"<Document>\n\t<name>{name} ({date_time_tag})</name>"
+
+        cleaned_content = re.sub(r'<Document>\s*<name>(.*?)</name>', replace_doc_name, cleaned_content, count=1, flags=re.DOTALL)
+
+    return cleaned_content, route_found, date_time_tag, file_name_tag
 
 def process_file(filepath: str, inplace: bool = True, output_path: str = None) -> bool:
     """Processes a single KML file."""
@@ -63,7 +95,7 @@ def process_file(filepath: str, inplace: bool = True, output_path: str = None) -
         print(f"❌ Error reading {filepath}: {e}")
         return False
 
-    cleaned_content, route_found = strip_route_folder(content)
+    cleaned_content, route_found, date_time_tag, file_name_tag = strip_route_folder(content)
 
     if not route_found:
         print(f"ℹ️  No 'Route' folder found in {os.path.basename(filepath)} (already cleaned or unsupported format).")
@@ -75,7 +107,10 @@ def process_file(filepath: str, inplace: bool = True, output_path: str = None) -
         target_path = filepath
     else:
         name, ext = os.path.splitext(filepath)
-        target_path = f"{name}_trail_only{ext}"
+        if file_name_tag and file_name_tag not in name:
+            target_path = f"{name}_{file_name_tag}{ext}"
+        else:
+            target_path = f"{name}_trail_only{ext}"
 
     try:
         with open(target_path, 'w', encoding='utf-8') as f:

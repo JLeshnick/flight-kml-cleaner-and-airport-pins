@@ -1,198 +1,142 @@
 # ✈️ Flight KML Tools for Google Earth
 
-A collection of lightweight Python utilities for flight enthusiasts, frequent flyers, and pilots to clean flight tracks and generate custom airport pin maps for **Google Earth**.
+A collection of lightweight browser & Python utilities for flight enthusiasts, frequent flyers, and pilots to clean flight tracks and generate custom airport pushpin maps for **Google Earth**.
+
+> 🚀 **Live Web App:** [https://jleshnick.github.io/flight-kml-cleaner-and-airport-pins/](https://jleshnick.github.io/flight-kml-cleaner-and-airport-pins/)
 
 ---
 
-## 📸 Previews
+## 🌐 Web App (GitHub Pages) — Recommended
 
-<!-- SCREENSHOT PLACEHOLDER: Add a screenshot of your Google Earth map with flight tracks and airport pins -->
-![Google Earth Flight Map Overview](docs/images/google_earth_map_overview.png)
-*Example: Clean 3D flight trails and custom airport pins imported into Google Earth.*
+Run both tools directly in your browser without installing Python or terminal commands!
 
----
+👉 **[Launch Flight KML Tools Web App](https://jleshnick.github.io/flight-kml-cleaner-and-airport-pins/)**
 
-## 🚀 Included Utilities
-
-### 1. `clean_fr24_kml.py` — Flightradar24 & FlightAware KML Optimizer
-Flight tracking services like **Flightradar24** export KML files containing two main folders:
-1. **Route**: Thousands of individual point placemarks for every second of altitude/speed telemetry.
-2. **Trail**: The smooth 3D continuous flight line path.
-
-Importing multiple raw KML files into Google Earth causes **extreme lag** and triggers map element limits due to tens of thousands of individual points. 
-
-`clean_fr24_kml.py` strips out the redundant `Route` folder while preserving the continuous 3D flight path, metadata, headers, and colors — shrinking file sizes by **up to 95%** and making Google Earth run seamlessly.
-
-### 2. `generate_airport_pins.py` — Custom Airport Pin Generator
-Generates styled airport pin placemarks matching FlightAware / Google Earth formatting for any visited airport (IATA or ICAO code).
-
-Each pin includes:
-* 📍 **Blue Airport Pushpin Style**
-* 🏷️ **Name Format:** `IATA (Full Airport Name)` (e.g. `BNA (Nashville International Airport)`)
-* ℹ️ **Interactive Balloon Details:** City, State/Country, and live **FlightAware** activity & info links.
-* 🌐 **Automatic Code Lookup:** Resolves ~29,000 global airports automatically using built-in / cached data.
-* ⚡ **Interactive Quick Pin:** Run `python3 generate_airport_pins.py` and type `BNA`!
-* 📁 **Smart Folder Naming:** Single pins import into Google Earth as the airport name directly (e.g. `BNA (Nashville International Airport)`), avoiding generic wrapper folder clutter.
-* 🏷️ **Custom Container Naming (`-n`):** Specify custom folder names when bundling multiple airports.
-* 🔍 **Auto-Scan Feature:** Scan a folder of exported flight KML files to automatically detect all visited airports and pin them all at once!
+- ⚡ **100% Client-Side & Private**: Your flight files are processed instantly in your browser and are **never** uploaded to any server.
+- ✈️ **KML Track Cleaner**: Drag and drop Flightradar24 or FlightAware `.kml` files to strip point clutter, shrink file size by up to 95%, and automatically append the **date & departure time (UTC)** to the folder name in Google Earth (e.g. `AA1667 (2026-08-11 14:30 UTC)`) and filename (e.g. `AA1667_2026-08-11_1430_UTC.kml`).
+- 📍 **Airport Pin Generator**: Type any airport code (e.g. `BNA, DFW, LHR, FCO`) or drop flight KML files to automatically detect and pin visited airports.
+- 📱 **Cross-Platform**: Works on Mac, PC, Chromebooks, iPads, and mobile browsers.
 
 ---
 
-## 📦 Requirements & Installation
+### 📸 Web App Previews
 
-* **Python 3.7+**
-* **Zero external dependencies!** Uses Python's built-in standard library (`urllib`, `xml`, `re`, `argparse`).
+![Web App KML Route Cleaner Interface](docs/images/web_app_cleaner.png)
+*Example: Drag-and-drop KML route cleaner with instant size reduction and date/time folder tagging.*
 
-Simply clone or download this repository:
-```bash
-git clone https://github.com/your-username/flight-kml-tools.git
-cd flight-kml-tools
-chmod +x *.py
-```
+![Web App Airport Pin Generator Interface](docs/images/web_app_pins.png)
+*Example: Typing airport codes with live database lookups and automated KML pin generation.*
 
 ---
 
-## 📖 Step-by-Step Tutorial: How to Get Your Flight KML Files
+### 🚀 How to Enable GitHub Pages
 
-<!-- SCREENSHOT PLACEHOLDER: Add a screenshot showing the FR24 KML download button -->
+1. Go to repository **Settings** ➔ **Pages** at [`https://github.com/JLeshnick/flight-kml-cleaner-and-airport-pins/settings/pages`](https://github.com/JLeshnick/flight-kml-cleaner-and-airport-pins/settings/pages).
+2. Under **Build and deployment** ➔ **Source**, select **Deploy from a branch**.
+3. Choose the **`main`** branch and root **`/ (root)`** folder, then click **Save**.
+4. GitHub Pages will build and host your app live at: [https://jleshnick.github.io/flight-kml-cleaner-and-airport-pins/](https://jleshnick.github.io/flight-kml-cleaner-and-airport-pins/)!
+
+---
+
+## 📖 Step-by-Step Tutorial: How to Get & Import Flight KML Files
+
+### 1. Exporting Flight KML Tracks
+
 ![Flightradar24 KML Download Button](docs/images/fr24_export_tutorial.png)
 
-### Exporting from Flightradar24:
-1. Log in to your **Flightradar24** account on the web.
-2. Go to **My Flightradar24** or search for any flight in history.
-3. Select the flight and click on **Download / Export Data**.
-4. Choose **KML** (or **KML Track**).
-5. Save the `.kml` file to your computer.
+#### Exporting from Flightradar24:
+1. Log in to **Flightradar24**.
+2. Go to **My Flightradar24** or search for any historical flight.
+3. Click on **Download / Export Data**.
+4. Choose **KML** (or **KML Track**) and save the file.
 
-### Exporting from FlightAware:
+#### Exporting from FlightAware:
 1. Go to [flightaware.com](https://flightaware.com) and search for your flight.
 2. Under the flight track map, click **Google Earth (KML)**.
-3. Download the resulting `.kml` file.
+3. Download the `.kml` track file.
 
 ---
 
-## 🛠️ Usage Guide
+### 2. Importing Cleaned KMLs into Google Earth
 
-### Using `generate_airport_pins.py`
+![Google Earth Flight Map Overview](docs/images/google_earth_map_overview.png)
+*Example: Clean 3D flight trails with date/time tags and custom airport pins in Google Earth.*
 
-<!-- SCREENSHOT PLACEHOLDER: Add a screenshot of an airport pin balloon popup in Google Earth -->
 ![Airport Pin Popup Balloon](docs/images/airport_pin_balloon.png)
+*Example: FlightAware-style balloon popup with live flight activity links.*
 
-#### 1. Quick Interactive Mode (Most Popular):
-Simply run the script with no arguments:
-```bash
-python3 generate_airport_pins.py
-```
-It will prompt you:
-```text
-Enter airport code(s) (e.g. BNA or BNA, DFW, LHR): BNA
-```
-*Creates `BNA_airport_pin.kml` ready to open in Google Earth! When imported into Google Earth, it names the item `BNA (Nashville International Airport)` directly without creating generic container folders.*
+#### Google Earth Web (Browser):
+1. Open [earth.google.com](https://earth.google.com/web/).
+2. Click **Projects** ➔ **New Project** ➔ **Import KML file from computer**.
+3. Select your cleaned flight `.kml` tracks or generated `Airport_Pins.kml`.
 
-#### 2. Single Airport Pin via CLI:
-```bash
-python3 generate_airport_pins.py BNA
-```
-
-#### 3. Multiple Airport Pins:
-```bash
-python3 generate_airport_pins.py HSV DFW LHR FCO CIA LAS -o Visited_Airports.kml
-```
-
-#### 4. Custom Folder Name in Google Earth (`-n` / `--name`):
-Prevent duplicate folder wrappers by customizing the container name inside Google Earth:
-```bash
-python3 generate_airport_pins.py BNA DFW LHR -n "2026 Trip Airports" -o Trip_Airports.kml
-```
-
-#### 5. Read Airport Codes from a Text or CSV File:
-Create a file named `my_airports.txt` with your airport codes (e.g. `HSV, DFW, LHR, FCO, CIA, LAS`) and run:
-```bash
-python3 generate_airport_pins.py -f my_airports.txt -o Visited_Airports.kml
-```
-
-#### 6. Automatically Scan Flight KML Files:
-```bash
-python3 generate_airport_pins.py --scan ~/Downloads/*.kml -o Scanned_Visited_Airports.kml
-```
+#### Google Earth Pro (Desktop App):
+1. Launch **Google Earth Pro**.
+2. Select **File** ➔ **Open...** and pick your `.kml` files.
+3. Drag items into **My Places** to save your flight map permanently.
 
 ---
 
-### Command-Line Arguments Reference (`generate_airport_pins.py`)
+## 🐍 Command Line & Python Scripts (For Power Users)
 
-| Argument | Description | Example |
-| :--- | :--- | :--- |
-| `codes` | One or more IATA / ICAO airport codes | `python3 generate_airport_pins.py BNA DFW` |
-| `-o`, `--output` | Custom output `.kml` filename | `-o Visited_Airports.kml` |
-| `-n`, `--name` | Custom folder/document name in Google Earth | `-n "Summer 2026 Airports"` |
-| `-f`, `--file` | Path to text/CSV file containing airport codes | `-f my_airports.txt` |
-| `--scan` | Glob pattern of KML flight files to scan | `--scan ~/Downloads/*.kml` |
+For users who prefer batch processing entire directories via terminal, automated scripts, or cron jobs:
 
----
+### 1. `clean_fr24_kml.py` — Flight Track Optimizer
 
-### Using `clean_fr24_kml.py`
+Strips out thousands of high-density `Route` Placemark points while preserving 3D continuous flight lines, metadata, and styling. Automatically tags folder names with date and time (e.g. `AA1667 (2026-08-11 14:30)`).
 
-#### Clean a single KML file (overwrites in-place by default):
 ```bash
-python3 clean_fr24_kml.py AA1667-410eac2d.kml
-```
+# Clean a single file (overwrites in-place):
+python3 clean_fr24_kml.py flight.kml
 
-#### Batch clean all KML files in your Downloads directory:
-```bash
+# Batch clean all KML files in Downloads folder:
 python3 clean_fr24_kml.py ~/Downloads/*.kml
-```
 
-#### Save to a new file without overwriting the original:
-```bash
+# Save to a new file instead of overwriting:
 python3 clean_fr24_kml.py flight.kml --no-inplace
 ```
 
-#### Specify a custom output name:
+### 2. `generate_airport_pins.py` — Styled Airport Pin Generator
+
+Generates Google Earth pushpin KML placemarks with FlightAware formatting, resolving ~29,000 global airports automatically.
+
 ```bash
-python3 clean_fr24_kml.py flight.kml -o flight_clean.kml
+# Quick interactive prompt:
+python3 generate_airport_pins.py
+
+# Generate pins for specific airport codes:
+python3 generate_airport_pins.py BNA DFW LHR FCO -o Visited_Airports.kml
+
+# Read airport codes from a text/CSV file:
+python3 generate_airport_pins.py -f my_airports.txt -o Visited_Airports.kml
+
+# Scan a folder of flight KML files to detect all visited airports automatically:
+python3 generate_airport_pins.py --scan ~/Downloads/*.kml -o Scanned_Airports.kml
 ```
-
----
-
-## 🌍 How to Import into Google Earth
-
-### Google Earth Web (Chrome / Edge / Firefox / Safari):
-1. Go to [earth.google.com](https://earth.google.com/web/).
-2. Open the left menu and click **Projects**.
-3. Click **New Project** ➔ **Import KML file from computer**.
-4. Select your cleaned `.kml` flight files and your `BNA_airport_pin.kml`.
-
-### Google Earth Pro (Desktop App):
-1. Launch **Google Earth Pro**.
-2. Go to **File** ➔ **Open...**
-3. Select your `.kml` files.
-4. Drag and drop them under **My Places** to permanently save your interactive flight map!
 
 ---
 
 ## 📁 Repository Structure
 
-```
+```text
 flight-kml-tools/
 │
-├── clean_fr24_kml.py          # Flightradar24 / FlightAware KML path optimizer
-├── generate_airport_pins.py   # Styled airport pin generator
+├── index.html                 # Single-page GitHub Pages Web App
+├── airports_db.js             # Offline bundled dataset (~29,000 airports)
+├── clean_fr24_kml.py          # Python KML flight path optimizer CLI
+├── generate_airport_pins.py   # Python airport pin generator CLI
 ├── README.md                  # Documentation and tutorial
 └── docs/
     └── images/
-        ├── google_earth_map_overview.png   # (Add your screenshot here)
-        ├── fr24_export_tutorial.png        # (Add your screenshot here)
-        └── airport_pin_balloon.png         # (Add your screenshot here)
+        ├── web_app_cleaner.png        # (Web App KML cleaner screenshot placeholder)
+        ├── web_app_pins.png           # (Web App pin generator screenshot placeholder)
+        ├── google_earth_map_overview.png
+        ├── fr24_export_tutorial.png
+        └── airport_pin_balloon.png
 ```
 
 ---
 
-## 🤝 Contributing & Feedback
-
-Feel free to open an issue or submit a pull request if you have ideas for extra features (e.g. flight distance calculations, airline logos, or custom pin colors)!
-
----
-
-## 📄 License
+## 🤝 License
 
 MIT License — free for personal and commercial use.

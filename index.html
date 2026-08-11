@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flight KML Tools — Clean Route Tracks & Airport Pins for Google Earth</title>
+  <meta name="description" content="Free browser-based tools to clean Flightradar24 KML tracks and generate custom FlightAware-style airport pin maps for Google Earth. 100% private and client-side.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="airports_db.js"></script>
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: #131b2e;
+      --bg-card-hover: #1a253e;
+      --bg-input: #0d1322;
+      --border-color: #23314d;
+      --border-focus: #38bdf8;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #38bdf8;
+      --accent-blue-hover: #0284c7;
+      --accent-cyan: #06b6d4;
+      --accent-green: #34d399;
+      --accent-amber: #fbbf24;
+      --accent-red: #f87171;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.06) 0%, transparent 40%);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: var(--accent-blue);
+      font-size: 0.825rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Nav Tabs */
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      background: var(--bg-card);
+      padding: 0.4rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 0.75rem 1.25rem;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      background: var(--accent-blue);
+      color: #090d16;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.35);
+    }
+
+    /* Tab Content Cards */
+    .tab-pane {
+      display: none;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tool-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .tool-description {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.75rem;
+    }
+
+    /* Dropzone */
+    .dropzone {
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--bg-input);
+      position: relative;
+    }
+
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--accent-blue);
+      background: rgba(56, 189, 248, 0.04);
+    }
+
+    .dropzone-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+      color: var(--accent-blue);
+    }
+
+    .dropzone h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .dropzone p {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    /* Form Controls */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+    }
+
+    .input-text {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+
+    .input-text:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .input-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.5rem;
+      border-radius: var(--radius-sm);
+      border: none;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--accent-blue);
+      color: #090d16;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-blue-hover);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--bg-input);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-blue);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none !important;
+    }
+
+    /* Output Results List */
+    .results-section {
+      margin-top: 2rem;
+    }
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .results-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .result-card {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .result-info h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      word-break: break-all;
+    }
+
+    .result-meta {
+      display: flex;
+      gap: 0.75rem;
+      font-size: 0.825rem;
+      color: var(--text-muted);
+    }
+
+    .savings-badge {
+      color: var(--accent-green);
+      font-weight: 700;
+      background: rgba(52, 211, 153, 0.1);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    /* Airport Pins Preview Cards */
+    .airport-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .airport-chip {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 0.4rem 0.75rem;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .airport-chip-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: var(--accent-blue);
+    }
+
+    .airport-chip-name {
+      color: var(--text-muted);
+    }
+
+    /* How to Use Section */
+    .info-section {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+    }
+
+    .info-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-card ol {
+      padding-left: 1.2rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .info-card li {
+      margin-bottom: 0.4rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: auto;
+    }
+
+    footer a {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      h1 { font-size: 1.8rem; }
+      .container { padding: 1.25rem 1rem; }
+      .tab-pane { padding: 1.25rem; }
+      .result-card { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge">
+        <span>🔒 100% Client-Side Privacy</span>
+        <span>•</span>
+        <span>Zero Data Server Uploads</span>
+      </div>
+      <h1>Flight KML Tools</h1>
+      <p>Optimize Flightradar24 & FlightAware flight tracks and generate custom airport pushpin maps for Google Earth instantly.</p>
+    </header>
+
+    <div class="nav-tabs">
+      <button class="tab-btn active" id="tab-cleaner-btn" onclick="switchTab('cleaner')">
+        ✈️ KML Track Optimizer
+      </button>
+      <button class="tab-btn" id="tab-pins-btn" onclick="switchTab('pins')">
+        📍 Airport Pin Generator
+      </button>
+    </div>
+
+    <!-- TAB 1: KML TRACK CLEANER -->
+    <div class="tab-pane active" id="tab-cleaner">
+      <div class="tool-title">
+        <span>✈️</span> Flightradar24 / FlightAware KML Route Cleaner
+      </div>
+      <div class="tool-description">
+        Flightradar24 exports include thousands of individual timestamp placemarks in a <code>Route</code> folder, causing Google Earth to lag severely. This tool strips out the high-density points while keeping the continuous 3D flight path, metadata, and styling.
+      </div>
+
+      <div class="dropzone" id="cleaner-dropzone" onclick="document.getElementById('cleaner-file-input').click()">
+        <div class="dropzone-icon">📁</div>
+        <h3>Drop Flightradar24 / FlightAware KML files here</h3>
+        <p>or click to browse from your computer (Multiple files supported)</p>
+        <input type="file" id="cleaner-file-input" class="file-input" accept=".kml" multiple onchange="handleCleanerFiles(this.files)">
+      </div>
+
+      <div class="results-section" id="cleaner-results" style="display: none;">
+        <div class="results-header">
+          <h3>Cleaned Files</h3>
+          <button class="btn btn-secondary" id="download-all-btn" onclick="downloadAllCleanedFiles()">
+            ⬇️ Download All Cleaned KMLs
+          </button>
+        </div>
+        <div class="results-list" id="cleaner-results-list"></div>
+      </div>
+    </div>
+
+    <!-- TAB 2: AIRPORT PIN GENERATOR -->
+    <div class="tab-pane" id="tab-pins">
+      <div class="tool-title">
+        <span>📍</span> Google Earth Airport Pin Generator
+      </div>
+      <div class="tool-description">
+        Generate custom FlightAware-style pushpin Placemarks for any airport by typing IATA or ICAO codes, or scan your flight KML files to detect visited airports automatically.
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="airport-codes-input">Airport Codes (IATA or ICAO)</label>
+        <input type="text" id="airport-codes-input" class="input-text" placeholder="e.g. BNA, DFW, LHR, FCO, CIA" oninput="renderAirportPreview()">
+        <div class="input-hint">Enter codes separated by spaces or commas. 29,000+ global airports supported.</div>
+      </div>
+
+      <div class="form-group" style="margin-top: 1.5rem;">
+        <label class="form-label">Or Scan Visited Airports from Existing Flight KML Files</label>
+        <div class="dropzone" id="scan-dropzone" onclick="document.getElementById('scan-file-input').click()" style="padding: 1.5rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🔍</div>
+          <div style="font-size: 0.9rem; font-weight: 600;">Drop flight KML files to scan for visited airport codes</div>
+          <input type="file" id="scan-file-input" class="file-input" accept=".kml" multiple onchange="handleScanFiles(this.files)">
+        </div>
+      </div>
+
+      <div id="airport-preview-container" style="margin-top: 1.5rem; display: none;">
+        <div class="form-label" id="preview-count-label">Matched Airports</div>
+        <div class="airport-chips" id="airport-chips-list"></div>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <button class="btn btn-primary" id="generate-pins-btn" onclick="generateAirportPins()" style="width: 100%;">
+          📍 Download Airport Pin KML
+        </button>
+      </div>
+    </div>
+
+    <!-- HOW TO USE -->
+    <div class="info-section">
+      <div class="info-card">
+        <h3>🌍 How to Import into Google Earth</h3>
+        <ol>
+          <li>Open <strong>Google Earth Web</strong> (earth.google.com) or <strong>Google Earth Pro</strong> desktop app.</li>
+          <li>In Google Earth Web, click <strong>Projects</strong> ➔ <strong>New Project</strong> ➔ <strong>Import KML file from computer</strong>.</li>
+          <li>Select your downloaded cleaned KML flight path or Airport Pin KML file.</li>
+        </ol>
+      </div>
+
+      <div class="info-card">
+        <h3>💡 Pro Tips</h3>
+        <ol>
+          <li><strong>Cleaned Files:</strong> Shrinks Flightradar24 exports by up to 95%, removing map clutter and smooth rendering.</li>
+          <li><strong>Single Airport Pins:</strong> Single airport KMLs import as direct items in Google Earth without generic container folder wrappers.</li>
+          <li><strong>Instant Airport Database:</strong> Bundled offline database resolves ~29,000 global airports instantly.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Flight KML Cleaner & Airport Pin Generator — Built for flight enthusiasts, frequent flyers, and pilots.</p>
+    <p style="margin-top: 0.5rem;">
+      <a href="https://github.com/JLeshnick/flight-kml-cleaner-and-airport-pins" target="_blank" rel="noopener">GitHub Repository</a>
+    </p>
+  </footer>
+
+  <script>
+    // Tab Switcher
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      
+      document.getElementById('tab-' + tabName).classList.add('active');
+      document.getElementById('tab-' + tabName + '-btn').classList.add('active');
+    }
+
+    // -------------------------------------------------------------
+    // TOOL 1: KML TRACK CLEANER LOGIC
+    // -------------------------------------------------------------
+    let cleanedFilesData = [];
+
+    // Drag and drop setup for Cleaner
+    const cleanerDropzone = document.getElementById('cleaner-dropzone');
+    ['dragenter', 'dragover'].forEach(eventName => {
+      cleanerDropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        cleanerDropzone.classList.add('dragover');
+      }, false);
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+      cleanerDropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        cleanerDropzone.classList.remove('dragover');
+      }, false);
+    });
+    cleanerDropzone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      if (dt.files && dt.files.length > 0) {
+        handleCleanerFiles(dt.files);
+      }
+    });
+
+    function stripRouteFolder(kmlContent) {
+      const pattern = /\s*<Folder>\s*<name>Route<\/name>.*?<\/Folder>/gs;
+      const routeFound = pattern.test(kmlContent);
+      let cleanedContent = kmlContent.replace(pattern, '');
+
+      // Extract Date & Time from timestamp tags or content
+      const isoMatch = kmlContent.match(/<when>(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})/);
+      let dateTimeTag = '';
+      let fileNameTag = '';
+
+      if (isoMatch) {
+        const datePart = isoMatch[1];
+        const t1 = isoMatch[2];
+        const t2 = isoMatch[3];
+        dateTimeTag = `${datePart} ${t1}:${t2} UTC`;
+        fileNameTag = `${datePart}_${t1}${t2}_UTC`;
+      } else {
+        const dateMatch = kmlContent.match(/\b(\d{4}-\d{2}-\d{2})\b/);
+        if (dateMatch) {
+          const datePart = dateMatch[1];
+          const timeMatch = kmlContent.match(/\b(\d{2}):(\d{2})\b/);
+          if (timeMatch) {
+            const t1 = timeMatch[1];
+            const t2 = timeMatch[2];
+            dateTimeTag = `${datePart} ${t1}:${t2} UTC`;
+            fileNameTag = `${datePart}_${t1}${t2}_UTC`;
+          } else {
+            dateTimeTag = `${datePart} UTC`;
+            fileNameTag = `${datePart}_UTC`;
+          }
+        }
+      }
+
+      if (dateTimeTag) {
+        cleanedContent = cleanedContent.replace(/<Document>\s*<name>(.*?)<\/name>/s, (match, docName) => {
+          if (docName.includes('UTC') || docName.includes(dateTimeTag.split(' ')[0])) {
+            return match;
+          }
+          return `<Document>\n\t<name>${docName} (${dateTimeTag})</name>`;
+        });
+      }
+
+      return { cleanedContent, routeFound, dateTimeTag, fileNameTag };
+    }
+
+    async function handleCleanerFiles(files) {
+      if (!files || files.length === 0) return;
+      cleanedFilesData = [];
+      const resultsList = document.getElementById('cleaner-results-list');
+      resultsList.innerHTML = '';
+
+      for (let file of files) {
+        if (!file.name.endsWith('.kml')) continue;
+
+        const content = await file.text();
+        const { cleanedContent, routeFound, fileNameTag } = stripRouteFolder(content);
+
+        const origSizeKB = file.size / 1024;
+        const newSizeKB = new Blob([cleanedContent]).size / 1024;
+        const savedKB = origSizeKB - newSizeKB;
+        const pctSaved = origSizeKB > 0 ? ((savedKB / origSizeKB) * 100).toFixed(1) : 0;
+
+        const baseName = file.name.replace(/\.kml$/i, '');
+        let outputName = file.name;
+        if (fileNameTag && !baseName.includes(fileNameTag)) {
+          outputName = `${baseName}_${fileNameTag}.kml`;
+        } else if (routeFound && !file.name.includes('_trail_only')) {
+          outputName = `${baseName}_trail_only.kml`;
+        }
+
+        cleanedFilesData.push({
+          filename: outputName,
+          content: cleanedContent,
+          origSizeKB,
+          newSizeKB,
+          pctSaved,
+          routeFound
+        });
+
+        // Render card
+        const card = document.createElement('div');
+        card.className = 'result-card';
+        card.innerHTML = `
+          <div class="result-info">
+            <h4>${file.name}</h4>
+            <div class="result-meta">
+              <span>${origSizeKB.toFixed(1)} KB ➔ ${newSizeKB.toFixed(1)} KB</span>
+              ${routeFound ? `<span class="savings-badge">Saved ${pctSaved}%</span>` : `<span style="color: var(--text-muted);">No Route folder found</span>`}
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;" onclick="triggerDownload('${encodeURIComponent(outputName)}', ${cleanedFilesData.length - 1})">
+              ⬇️ Download KML
+            </button>
+          </div>
+        `;
+        resultsList.appendChild(card);
+      }
+
+      if (cleanedFilesData.length > 0) {
+        document.getElementById('cleaner-results').style.display = 'block';
+      }
+    }
+
+    function triggerDownload(encodedFilename, index) {
+      const item = cleanedFilesData[index];
+      const blob = new Blob([item.content], { type: 'application/vnd.google-earth.kml+xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = decodeURIComponent(encodedFilename);
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadAllCleanedFiles() {
+      cleanedFilesData.forEach((item, idx) => {
+        setTimeout(() => {
+          triggerDownload(encodeURIComponent(item.filename), idx);
+        }, idx * 250);
+      });
+    }
+
+
+    // -------------------------------------------------------------
+    // TOOL 2: AIRPORT PIN GENERATOR LOGIC
+    // -------------------------------------------------------------
+    let airportDB = null;
+    let iataMap = {};
+    let icaoMap = {};
+
+    function loadAirportDatabase() {
+      if (window.AIRPORTS_DATA) {
+        airportDB = window.AIRPORTS_DATA;
+        buildLookupIndex();
+        renderAirportPreview();
+        return;
+      }
+
+      // Backup fetch if window.AIRPORTS_DATA wasn't loaded synchronously
+      const AIRPORT_DATA_URL = "https://raw.githubusercontent.com/mwgg/Airports/master/airports.json";
+      fetch(AIRPORT_DATA_URL)
+        .then(resp => resp.json())
+        .then(data => {
+          airportDB = data;
+          buildLookupIndex();
+          renderAirportPreview();
+        })
+        .catch(err => console.warn("Could not load airport DB online:", err));
+    }
+
+    function buildLookupIndex() {
+      if (!airportDB) return;
+      iataMap = {};
+      icaoMap = {};
+
+      for (let key in airportDB) {
+        const entry = airportDB[key];
+        const icao = (entry.icao || key).trim().toUpperCase();
+        const iata = (entry.iata || "").trim().toUpperCase();
+
+        if (icao) icaoMap[icao] = entry;
+        if (iata && iata !== "\\N" && iata !== "-") {
+          iataMap[iata] = entry;
+        }
+      }
+    }
+
+    function findAirport(code) {
+      if (!airportDB) return null;
+      code = code.trim().toUpperCase();
+      if (iataMap[code]) return iataMap[code];
+      if (icaoMap[code]) return icaoMap[code];
+      if (code.length === 3 && icaoMap['K' + code]) return icaoMap['K' + code];
+      return null;
+    }
+
+    function getDisplayTitle(airport) {
+      const iata = (airport.iata || "").trim().toUpperCase();
+      const icao = (airport.icao || "").trim().toUpperCase();
+      const name = (airport.name || "Airport").trim();
+      return (iata && iata !== "\\N") ? `${iata} (${name})` : `${icao} (${name})`;
+    }
+
+    function createPlacemarkXML(airport) {
+      const iata = (airport.iata || "").trim().toUpperCase();
+      const icao = (airport.icao || "").trim().toUpperCase();
+      const name = (airport.name || "Airport").trim();
+      const city = (airport.city || "").trim();
+      const state = (airport.state || "").trim();
+      const country = (airport.country || "").trim();
+      const lat = airport.lat || 0.0;
+      const lon = airport.lon || 0.0;
+
+      const flightaware_icao = icao.length === 4 ? icao : (iata.length === 3 && country === "US" ? `K${iata}` : iata);
+      const displayTitle = getDisplayTitle(airport);
+
+      const locationParts = [];
+      if (city) locationParts.push(city);
+      if (state && state !== city) locationParts.push(state);
+      else if (country && !state) locationParts.push(country);
+      const locationStr = locationParts.join(", ");
+
+      const description = `${name}<br>${locationStr}<br><br>` +
+        `<a href='http://www.flightaware.com/live/airport/${flightaware_icao}'>${iata || icao} airport activity (live)</a><br>` +
+        `<a href='http://www.flightaware.com/resources/airport/${flightaware_icao}'>${iata || icao} airport information</a>`;
+
+      return `\t<Placemark>
+\t\t<name>${escapeXML(displayTitle)}</name>
+\t\t<styleUrl>#airport_pin</styleUrl>
+\t\t<description><![CDATA[${description}]]></description>
+\t\t<Point>
+\t\t\t<coordinates>${lon},${lat},0</coordinates>
+\t\t</Point>
+\t</Placemark>`;
+    }
+
+    function escapeXML(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function generateKMLDocument(placemarksXml, docName) {
+      const nameTag = docName ? `\t<name>${escapeXML(docName)}</name>\n` : "";
+      return `<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+${nameTag}\t<Style id="airport_pin">
+\t\t<IconStyle>
+\t\t\t<scale>1.1</scale>
+\t\t\t<Icon>
+\t\t\t\t<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+\t\t\t</Icon>
+\t\t\t<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+\t\t</IconStyle>
+\t\t<LabelStyle>
+\t\t\t<scale>0.9</scale>
+\t\t</LabelStyle>
+\t\t<BalloonStyle>
+\t\t\t<text><![CDATA[$[description]]]></text>
+\t\t</BalloonStyle>
+\t</Style>
+${placemarksXml.join("\n")}
+</Document>
+</kml>`;
+    }
+
+    function parseInputCodes() {
+      const raw = document.getElementById('airport-codes-input').value;
+      if (!raw) return [];
+      const tokens = raw.replace(/,/g, ' ').split(/\s+/);
+      const codes = new Set();
+      tokens.forEach(t => {
+        const clean = t.trim().toUpperCase();
+        if (clean.length >= 3 && clean.length <= 4) codes.add(clean);
+      });
+      return Array.from(codes);
+    }
+
+    function renderAirportPreview() {
+      const codes = parseInputCodes();
+      const container = document.getElementById('airport-preview-container');
+      const chipsList = document.getElementById('airport-chips-list');
+      const countLabel = document.getElementById('preview-count-label');
+
+      chipsList.innerHTML = '';
+      if (codes.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+
+      container.style.display = 'block';
+      let foundCount = 0;
+
+      codes.forEach(code => {
+        const ap = findAirport(code);
+        const chip = document.createElement('div');
+        chip.className = 'airport-chip';
+        if (ap) {
+          foundCount++;
+          const nameStr = ap.name || '';
+          chip.innerHTML = `<span class="airport-chip-code">📍 ${code}</span> <span class="airport-chip-name">${nameStr} (${ap.city || ap.country})</span>`;
+        } else {
+          chip.innerHTML = `<span class="airport-chip-code" style="color: var(--accent-red)">⚠️ ${code}</span> <span class="airport-chip-name">Not found</span>`;
+        }
+        chipsList.appendChild(chip);
+      });
+
+      countLabel.textContent = `Matched ${foundCount} of ${codes.length} Airport Codes`;
+    }
+
+    function generateAirportPins() {
+      const codes = parseInputCodes();
+      if (codes.length === 0) {
+        alert("Please enter at least one airport code (e.g. BNA, DFW, LHR).");
+        return;
+      }
+
+      const placemarksXml = [];
+      const foundAirports = [];
+
+      codes.forEach(code => {
+        const ap = findAirport(code);
+        if (ap) {
+          placemarksXml.push(createPlacemarkXML(ap));
+          foundAirports.push(ap);
+        }
+      });
+
+      if (foundAirports.length === 0) {
+        alert("None of the specified airport codes were found in the database.");
+        return;
+      }
+
+      let docName = "";
+      if (foundAirports.length === 1) {
+        docName = getDisplayTitle(foundAirports[0]);
+      } else {
+        docName = "Airport Pins";
+      }
+
+      const kmlContent = generateKMLDocument(placemarksXml, docName);
+
+      let filename = "Airport_Pins.kml";
+      if (foundAirports.length === 1) {
+        const code = (foundAirports[0].iata || foundAirports[0].icao).toUpperCase();
+        filename = `${code}_airport_pin.kml`;
+      }
+
+      const blob = new Blob([kmlContent], { type: 'application/vnd.google-earth.kml+xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Drag and drop scanning for KML files in Pin Generator
+    async function handleScanFiles(files) {
+      if (!files || files.length === 0 || !airportDB) return;
+
+      const detectedCodes = new Set();
+      const codeRegex = /\b[A-Z]{3,4}\b/g;
+
+      for (let file of files) {
+        const content = await file.text();
+        const textToSearch = file.name + " " + content;
+        const matches = textToSearch.match(codeRegex);
+        if (matches) {
+          matches.forEach(m => {
+            if (findAirport(m)) {
+              detectedCodes.add(m.toUpperCase());
+            }
+          });
+        }
+      }
+
+      if (detectedCodes.size > 0) {
+        const currentInput = document.getElementById('airport-codes-input').value;
+        const existingCodes = parseInputCodes();
+        const allCodes = new Set([...existingCodes, ...detectedCodes]);
+        document.getElementById('airport-codes-input').value = Array.from(allCodes).join(', ');
+        renderAirportPreview();
+      } else {
+        alert("No valid airport codes detected in the uploaded KML files.");
+      }
+    }
+
+    // Initialize database on page load
+    loadAirportDatabase();
+  </script>
+</body>
+</html>
