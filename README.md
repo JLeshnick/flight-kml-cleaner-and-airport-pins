@@ -25,11 +25,15 @@ Run both tools directly in your browser without installing Python or terminal co
 
 ### 📸 Google Earth Previews
 
-![Google Earth Flight Routes & Airport Pins](images/google_earth_map_overview.png)
-*Example: Clean 3D flight paths paired with styled FlightAware airport pushpins imported into Google Earth.*
+<p align="center">
+  <img src="images/google_earth_map_overview.png" alt="Google Earth Flight Routes & Airport Pins" width="100%"><br>
+  <sub><em>Example: Clean 3D flight paths paired with styled FlightAware airport pushpins imported into Google Earth.</em></sub>
+</p>
 
-![Google Earth Visited Airport Pins Map](images/airport_pins_sample.png)
-*Example: Visited airport pushpins showing airport codes, full names, locations, and live FlightAware activity links.*
+<p align="center">
+  <img src="images/airport_pins_sample.png" alt="Google Earth Visited Airport Pins Map" width="100%"><br>
+  <sub><em>Example: Visited airport pushpins showing airport codes, full names, locations, and live FlightAware activity links.</em></sub>
+</p>
 
 ---
 
