@@ -454,12 +454,44 @@
       }
     }
 
+    /* Matched Airport Preview Box (Fixed Height to Prevent Layout Shift) */
+    .preview-box {
+      margin-top: 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.5rem 0.75rem;
+      background: var(--bg-input);
+    }
+
+    .preview-header {
+      font-size: 0.775rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .preview-placeholder {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
     /* Chips List */
     .chips-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 0.75rem;
+      gap: 0.4rem;
+      min-height: 28px;
+      max-height: 72px;
+      overflow-y: auto;
+    }
+
+    .chips-grid::-webkit-scrollbar {
+      width: 4px;
+    }
+    .chips-grid::-webkit-scrollbar-thumb {
+      background: var(--border-focus);
+      border-radius: 4px;
     }
 
     .chip {
@@ -622,12 +654,16 @@
           </div>
         </div>
 
-        <div id="airport-preview-container" style="display: none; margin-top: 1rem;">
-          <label id="preview-count-label" style="font-size: 0.8rem; font-weight: 600;">Matched Airports</label>
-          <div class="chips-grid" id="airport-chips-list"></div>
+        <div id="airport-preview-container" class="preview-box">
+          <div class="preview-header">
+            <span id="preview-count-label">Matched Airports</span>
+          </div>
+          <div class="chips-grid" id="airport-chips-list">
+            <span class="preview-placeholder">Type airport codes above or drop flight KMLs to preview matches.</span>
+          </div>
         </div>
 
-        <div style="margin-top: 1.25rem;">
+        <div style="margin-top: 1rem;">
           <button class="btn btn-accent btn-full" onclick="generateAirportPins()">Generate Airport Pin KML</button>
         </div>
       </div>
@@ -966,17 +1002,16 @@ ${placemarksXml.join("\n")}
 
     function renderAirportPreview() {
       const codes = parseInputCodes();
-      const container = document.getElementById('airport-preview-container');
       const chipsList = document.getElementById('airport-chips-list');
       const countLabel = document.getElementById('preview-count-label');
 
       chipsList.innerHTML = '';
       if (codes.length === 0) {
-        container.style.display = 'none';
+        chipsList.innerHTML = '<span class="preview-placeholder">Type airport codes above or drop flight KMLs to preview matches.</span>';
+        countLabel.textContent = 'Matched Airports';
         return;
       }
 
-      container.style.display = 'block';
       let foundCount = 0;
 
       codes.forEach(code => {
