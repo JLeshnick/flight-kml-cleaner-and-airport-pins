@@ -4,6 +4,9 @@ A collection of lightweight browser & Python utilities for flight enthusiasts, f
 
 > 🚀 **Live Web App:** [https://jleshnick.github.io/flight-kml-cleaner-and-airport-pins/](https://jleshnick.github.io/flight-kml-cleaner-and-airport-pins/)
 
+![Flight KML Tools Web App Preview](images/page_preview.png)
+*Flight KML Tools web interface in dark mode.*
+
 ---
 
 ## 🌐 Web App (GitHub Pages) — Recommended
@@ -38,7 +41,7 @@ Run both tools directly in your browser without installing Python or terminal co
 #### Exporting from Flightradar24:
 1. Go directly to `https://www.flightradar24.com/data/flights/<flight-number>` (e.g. [`https://www.flightradar24.com/data/flights/aa240`](https://www.flightradar24.com/data/flights/aa240)), or use the Flightradar24 search bar to type your flight number and select it from the results.
 2. Locate your specific flight date in the flight history table.
-3. Click the **KML Download** button for that flight.
+3. Click the **Download** button for that flight and select **KML** (or **KML Track**).
 
 > 💡 **Note on Free Accounts:** The free Flightradar24 plan typically allows downloading KML track logs for flights within the past **7 days**. Accessing older flight histories requires a paid Flightradar24 subscription plan.
 
@@ -113,8 +116,9 @@ flight-kml-tools/
 ├── generate_airport_pins.py   # Python airport pin generator CLI
 ├── README.md                  # Comprehensive documentation and tutorial
 └── images/
-    ├── google_earth_map_overview.jpeg   # Preview 1: 3D Flight paths & Airport pushpins
-    └── airport_pins_sample.jpeg        # Preview 2: Visited Airport pushpins with FlightAware links
+    ├── page_preview.png               # Web App browser interface preview
+    ├── google_earth_map_overview.jpeg # Preview 1: 3D Flight paths & Airport pushpins
+    └── airport_pins_sample.jpeg       # Preview 2: Visited Airport pushpins with FlightAware links
 ```
 
 ---
