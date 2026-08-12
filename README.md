@@ -31,15 +31,6 @@ Run both tools directly in your browser without installing Python or terminal co
 
 ---
 
-### 🚀 How to Enable GitHub Pages
-
-1. Go to repository **Settings** ➔ **Pages** at [`https://github.com/JLeshnick/flight-kml-cleaner-and-airport-pins/settings/pages`](https://github.com/JLeshnick/flight-kml-cleaner-and-airport-pins/settings/pages).
-2. Under **Build and deployment** ➔ **Source**, select **Deploy from a branch**.
-3. Choose the **`main`** branch and root **`/ (root)`** folder, then click **Save**.
-4. GitHub Pages will build and host your app live at: [https://jleshnick.github.io/flight-kml-cleaner-and-airport-pins/](https://jleshnick.github.io/flight-kml-cleaner-and-airport-pins/)!
-
----
-
 ## 📖 Step-by-Step Tutorial: How to Get & Import Flight KML Files
 
 ### 1. Exporting Flight KML Tracks
