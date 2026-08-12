@@ -38,7 +38,7 @@ Run both tools directly in your browser without installing Python or terminal co
 #### Exporting from Flightradar24:
 1. Go directly to `https://www.flightradar24.com/data/flights/<flight-number>` (e.g. [`https://www.flightradar24.com/data/flights/aa240`](https://www.flightradar24.com/data/flights/aa240)), or use the Flightradar24 search bar to type your flight number and select it from the results.
 2. Locate your specific flight date in the flight history table.
-3. Click the **Download** button for that flight and select **KML** (or **KML Track**).
+3. Click the **KML Download** button for that flight.
 
 > 💡 **Note on Free Accounts:** The free Flightradar24 plan typically allows downloading KML track logs for flights within the past **7 days**. Accessing older flight histories requires a paid Flightradar24 subscription plan.
 
