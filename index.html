@@ -32,7 +32,7 @@
       --badge-text: #fafafa;
       --shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
       --radius: 8px;
-      --transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+      --transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
     }
 
     [data-theme="light"] {
@@ -77,7 +77,7 @@
     header.nav-bar {
       border-bottom: 1px solid var(--border);
       background-color: var(--bg-card);
-      padding: 0.75rem 0;
+      padding: 0.65rem 0;
     }
 
     .nav-container {
@@ -110,8 +110,8 @@
       background: transparent;
       border: 1px solid var(--border);
       color: var(--text-main);
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: var(--radius);
       cursor: pointer;
       display: inline-flex;
@@ -132,98 +132,19 @@
       max-width: 960px;
       width: 100%;
       margin: 0 auto;
-      padding: 2rem 1.5rem;
+      padding: 1.5rem 1.5rem 1rem 1.5rem;
       flex: 1;
     }
 
     /* Intro Hero */
     .intro {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
 
     .intro p {
       color: var(--text-muted);
-      font-size: 0.95rem;
-      max-width: 720px;
-    }
-
-    /* Image Gallery Showcase (PROMINENT TOP SECTION - BALANCED) */
-    .gallery-section {
-      margin-bottom: 2rem;
-    }
-
-    .gallery-header {
-      margin-bottom: 0.75rem;
-    }
-
-    .gallery-header h2 {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--text-heading);
-    }
-
-    .gallery-header p {
-      font-size: 0.825rem;
-      color: var(--text-muted);
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .gallery-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      text-decoration: none;
-      color: inherit;
-      display: block;
-      transition: var(--transition);
-      position: relative;
-    }
-
-    .gallery-card:hover {
-      border-color: var(--border-focus);
-      transform: translateY(-2px);
-    }
-
-    .gallery-card img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      display: block;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .gallery-card .caption {
-      padding: 0.75rem 1rem;
-    }
-
-    .gallery-card h4 {
       font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-heading);
-      margin-bottom: 0.15rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .gallery-card p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .zoom-hint {
-      font-size: 0.725rem;
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      padding: 0.1rem 0.4rem;
-      border-radius: 4px;
-      font-weight: 500;
+      max-width: 720px;
     }
 
     /* Minimal Segmented Tab Control */
@@ -231,18 +152,18 @@
       display: flex;
       gap: 0.25rem;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
 
     .tab-btn {
-      padding: 0.65rem 1.15rem;
+      padding: 0.55rem 1.15rem;
       background: transparent;
       border: none;
       border-bottom: 2px solid transparent;
       color: var(--text-muted);
       font-family: inherit;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       cursor: pointer;
       transition: var(--transition);
     }
@@ -270,21 +191,62 @@
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.5rem 1.75rem;
-      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
     }
 
     .card h2 {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 600;
       color: var(--text-heading);
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.25rem;
     }
 
     .card p.description {
       color: var(--text-muted);
-      font-size: 0.875rem;
+      font-size: 0.85rem;
       margin-bottom: 1.15rem;
+    }
+
+    /* Sub Tabs (Inside Pin Generator) */
+    .sub-tab-nav {
+      display: inline-flex;
+      gap: 0.25rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      padding: 0.25rem;
+      border-radius: var(--radius);
+      margin-bottom: 1.15rem;
+    }
+
+    .sub-tab-btn {
+      padding: 0.35rem 0.85rem;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .sub-tab-btn:hover {
+      color: var(--text-heading);
+    }
+
+    .sub-tab-btn.active {
+      background: var(--bg-hover);
+      color: var(--text-heading);
+    }
+
+    .sub-panel {
+      display: none;
+    }
+
+    .sub-panel.active {
+      display: block;
     }
 
     /* Minimal Dropzone */
@@ -305,24 +267,24 @@
 
     .dropzone p.drop-title {
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: var(--text-heading);
       margin-bottom: 0.25rem;
     }
 
     .dropzone p.drop-sub {
-      font-size: 0.825rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
     }
 
     /* Form Fields */
     .field {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
     }
 
     .field label {
       display: block;
-      font-size: 0.85rem;
+      font-size: 0.825rem;
       font-weight: 600;
       color: var(--text-heading);
       margin-bottom: 0.4rem;
@@ -330,7 +292,7 @@
 
     .field input[type="text"] {
       width: 100%;
-      padding: 0.65rem 0.85rem;
+      padding: 0.6rem 0.85rem;
       background: var(--bg-input);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -393,18 +355,18 @@
 
     /* Data Table for Results */
     .table-container {
-      margin-top: 1.5rem;
+      margin-top: 1.25rem;
     }
 
     .table-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.65rem;
     }
 
     .table-header h3 {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 600;
       color: var(--text-heading);
     }
@@ -417,7 +379,7 @@
 
     .results-table th {
       text-align: left;
-      padding: 0.6rem 0.75rem;
+      padding: 0.5rem 0.65rem;
       background: var(--bg-input);
       border-bottom: 1px solid var(--border);
       color: var(--text-muted);
@@ -425,7 +387,7 @@
     }
 
     .results-table td {
-      padding: 0.75rem;
+      padding: 0.65rem;
       border-bottom: 1px solid var(--border);
       color: var(--text-main);
     }
@@ -440,26 +402,12 @@
       color: var(--badge-text);
     }
 
-    /* 2-Column Grid for Pin Generator Tab */
-    .pins-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.25rem;
-      align-items: start;
-    }
-
-    @media (max-width: 640px) {
-      .pins-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Matched Airport Preview Box (Fixed Height to Prevent Layout Shift) */
+    /* Matched Airport Preview Box */
     .preview-box {
       margin-top: 0.85rem;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 0.5rem 0.75rem;
+      padding: 0.65rem 0.85rem;
       background: var(--bg-input);
     }
 
@@ -467,7 +415,7 @@
       font-size: 0.775rem;
       font-weight: 600;
       color: var(--text-muted);
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.4rem;
     }
 
     .preview-placeholder {
@@ -481,8 +429,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.4rem;
-      min-height: 28px;
-      max-height: 72px;
+      max-height: 100px;
       overflow-y: auto;
     }
 
@@ -495,7 +442,7 @@
     }
 
     .chip {
-      background: var(--bg-input);
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 0.35rem 0.65rem;
@@ -515,10 +462,69 @@
       color: var(--text-muted);
     }
 
+    /* Image Gallery Showcase */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .gallery-card {
+      background: var(--bg-body);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: var(--transition);
+    }
+
+    .gallery-card:hover {
+      border-color: var(--border-focus);
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gallery-card .caption {
+      padding: 0.75rem 1rem;
+    }
+
+    .gallery-card h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-bottom: 0.15rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .gallery-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .zoom-hint {
+      font-size: 0.725rem;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
     /* Footer */
     footer.footer {
       border-top: 1px solid var(--border);
-      padding: 1.5rem 1.5rem;
+      padding: 1.25rem 1.5rem;
       text-align: center;
       font-size: 0.825rem;
       color: var(--text-muted);
@@ -560,40 +566,11 @@
       <p>Clean Flightradar24 track logs with UTC date/time tags and generate custom FlightAware airport pin maps for Google Earth. 100% browser-based and client-side private.</p>
     </div>
 
-    <!-- PROMINENT SHOWCASE GALLERY (CLICKABLE HIGH-RES MAP OUTPUTS) -->
-    <div class="gallery-section">
-      <div class="gallery-header">
-        <h2>Google Earth Output Examples</h2>
-        <p>Click any image to view full high-resolution map output in a new tab</p>
-      </div>
-      <div class="gallery-grid">
-        <a href="images/google_earth_map_overview.jpeg" target="_blank" rel="noopener" class="gallery-card" title="Click to view full image">
-          <img src="images/google_earth_map_overview.jpeg" alt="Google Earth Flight Routes and Airport Pins">
-          <div class="caption">
-            <h4>
-              <span>Flight Tracks & Airport Pins</span>
-              <span class="zoom-hint">Click to enlarge ↗</span>
-            </h4>
-            <p>Cleaned 3D flight lines combined with styled airport pushpins in Google Earth.</p>
-          </div>
-        </a>
-        <a href="images/airport_pins_sample.jpeg" target="_blank" rel="noopener" class="gallery-card" title="Click to view full image">
-          <img src="images/airport_pins_sample.jpeg" alt="Google Earth Visited Airport Pins Map">
-          <div class="caption">
-            <h4>
-              <span>Visited Airport Pushpins</span>
-              <span class="zoom-hint">Click to enlarge ↗</span>
-            </h4>
-            <p>Airport placemarks formatted with full names, locations, and FlightAware balloon links.</p>
-          </div>
-        </a>
-      </div>
-    </div>
-
     <!-- TABS -->
     <div class="tab-nav">
       <button class="tab-btn active" id="tab-cleaner-btn" onclick="switchTab('cleaner')">KML Track Cleaner</button>
       <button class="tab-btn" id="tab-pins-btn" onclick="switchTab('pins')">Airport Pin Generator</button>
+      <button class="tab-btn" id="tab-previews-btn" onclick="switchTab('previews')">Output Examples</button>
     </div>
 
     <!-- PANEL 1: KML TRACK CLEANER -->
@@ -604,7 +581,7 @@
 
         <div class="dropzone" id="cleaner-dropzone" onclick="document.getElementById('cleaner-file-input').click()">
           <p class="drop-title">Select or drop Flightradar24 / FlightAware KML files</p>
-          <p class="drop-sub">Drag & drop files here, or click to browse (Multiple files supported)</p>
+          <p class="drop-sub">Drag & drop files here, or click to browse from your computer</p>
           <input type="file" id="cleaner-file-input" style="display: none;" accept=".kml" multiple onchange="handleCleanerFiles(this.files)">
         </div>
 
@@ -635,25 +612,34 @@
         <h2>Generate Airport Pin Map</h2>
         <p class="description">Generate styled Google Earth pushpin Placemarks for any airport code, matching FlightAware styling with live activity links.</p>
 
-        <div class="pins-grid">
-          <!-- Left: Manual Input -->
-          <div class="field" style="margin-bottom: 0;">
+        <!-- SUB TABS -->
+        <div class="sub-tab-nav">
+          <button class="sub-tab-btn active" id="subtab-codes-btn" onclick="switchSubTab('codes')">Type Airport Codes</button>
+          <button class="sub-tab-btn" id="subtab-scan-btn" onclick="switchSubTab('scan')">Scan KML Flight Logs</button>
+        </div>
+
+        <!-- SUB PANEL 1: TYPE CODES -->
+        <div class="sub-panel active" id="subpanel-codes">
+          <div class="field">
             <label for="airport-codes-input">Airport Codes (IATA or ICAO)</label>
             <input type="text" id="airport-codes-input" placeholder="e.g. BNA, DFW, LHR, FCO, CIA" oninput="renderAirportPreview()">
-            <p class="hint">Enter 3 or 4 letter codes separated by spaces or commas.</p>
+            <p class="hint">Enter 3 or 4 letter codes separated by spaces or commas. Resolves ~29,000 global airports.</p>
           </div>
+        </div>
 
-          <!-- Right: Auto-Scan Dropzone -->
-          <div class="field" style="margin-bottom: 0;">
+        <!-- SUB PANEL 2: SCAN KMLS -->
+        <div class="sub-panel" id="subpanel-scan">
+          <div class="field">
             <label>Scan KML Files for Visited Airports</label>
-            <div class="dropzone" onclick="document.getElementById('scan-file-input').click()" style="padding: 0.85rem 1rem;">
-              <p class="drop-title" style="font-size: 0.85rem;">Drop flight KMLs to auto-detect codes</p>
-              <p class="drop-sub" style="font-size: 0.75rem;">or click to browse flight files</p>
+            <div class="dropzone" onclick="document.getElementById('scan-file-input').click()" style="padding: 1.5rem 1rem;">
+              <p class="drop-title">Drop flight KML files here to auto-detect airport codes</p>
+              <p class="drop-sub">or click to browse flight files from your computer</p>
               <input type="file" id="scan-file-input" style="display: none;" accept=".kml" multiple onchange="handleScanFiles(this.files)">
             </div>
           </div>
         </div>
 
+        <!-- MATCHED AIRPORTS PREVIEW TRAY (SHARED) -->
         <div id="airport-preview-container" class="preview-box">
           <div class="preview-header">
             <span id="preview-count-label">Matched Airports</span>
@@ -663,8 +649,32 @@
           </div>
         </div>
 
-        <div style="margin-top: 1rem;">
+        <div style="margin-top: 1.15rem;">
           <button class="btn btn-accent btn-full" onclick="generateAirportPins()">Generate Airport Pin KML</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 3: OUTPUT EXAMPLES -->
+    <div class="panel" id="panel-previews">
+      <div class="card">
+        <h2>Google Earth Output Examples</h2>
+        <p class="description">Click any preview image below to view full high-resolution map outputs in a new tab.</p>
+        <div class="gallery-grid">
+          <a href="images/google_earth_map_overview.jpeg" target="_blank" rel="noopener" class="gallery-card">
+            <img src="images/google_earth_map_overview.jpeg" alt="Google Earth Flight Routes and Airport Pins">
+            <div class="caption">
+              <h4><span>Flight Tracks & Airport Pins</span> <span class="zoom-hint">Click to enlarge ↗</span></h4>
+              <p>Cleaned 3D flight lines combined with styled airport pushpins in Google Earth.</p>
+            </div>
+          </a>
+          <a href="images/airport_pins_sample.jpeg" target="_blank" rel="noopener" class="gallery-card">
+            <img src="images/airport_pins_sample.jpeg" alt="Google Earth Visited Airport Pins Map">
+            <div class="caption">
+              <h4><span>Visited Airport Pushpins</span> <span class="zoom-hint">Click to enlarge ↗</span></h4>
+              <p>Airport placemarks formatted with full names, locations, and FlightAware balloon links.</p>
+            </div>
+          </a>
         </div>
       </div>
     </div>
@@ -721,6 +731,15 @@
       
       document.getElementById('panel-' + tabName).classList.add('active');
       document.getElementById('tab-' + tabName + '-btn').classList.add('active');
+    }
+
+    // Sub Tab Switcher (Inside Pin Generator)
+    function switchSubTab(subTabName) {
+      document.querySelectorAll('.sub-panel').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.sub-tab-btn').forEach(el => el.classList.remove('active'));
+
+      document.getElementById('subpanel-' + subTabName).classList.add('active');
+      document.getElementById('subtab-' + subTabName + '-btn').classList.add('active');
     }
 
     // -------------------------------------------------------------
