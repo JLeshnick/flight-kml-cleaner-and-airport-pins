@@ -4,7 +4,11 @@ A collection of lightweight browser & Python utilities for flight enthusiasts, f
 
 > 🚀 **Live Web App:** [https://jleshnick.github.io/flight-kml-cleaner-and-airport-pins/](https://jleshnick.github.io/flight-kml-cleaner-and-airport-pins/)
 
-![Flight KML Tools Web App Preview](images/page_preview.png)
+<p align="center">
+  <a href="images/page_preview.png">
+    <img src="images/page_preview.png" alt="Flight KML Tools Web App Preview">
+  </a>
+</p>
 
 ---
 
@@ -25,15 +29,24 @@ Run both tools directly in your browser without installing Python or terminal co
 
 ### 📸 Google Earth Previews
 
-<p align="center">
-  <img src="images/google_earth_map_overview.png" alt="Google Earth Flight Routes & Airport Pins" width="100%"><br>
-  <sub><em>Example: Clean 3D flight paths paired with styled FlightAware airport pushpins imported into Google Earth.</em></sub>
-</p>
-
-<p align="center">
-  <img src="images/airport_pins_sample.png" alt="Google Earth Visited Airport Pins Map" width="100%"><br>
-  <sub><em>Example: Visited airport pushpins showing airport codes, full names, locations, and live FlightAware activity links.</em></sub>
-</p>
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <a href="images/google_earth_map_overview.png">
+        <img src="images/google_earth_map_overview.png" alt="Google Earth Flight Routes & Airport Pins">
+      </a>
+      <br>
+      <sub><strong>Flight Tracks & Airport Pins</strong><br>Clean 3D flight paths paired with styled FlightAware airport pushpins.</sub>
+    </td>
+    <td align="center" width="50%">
+      <a href="images/airport_pins_sample.png">
+        <img src="images/airport_pins_sample.png" alt="Google Earth Visited Airport Pins Map">
+      </a>
+      <br>
+      <sub><strong>Visited Airport Pushpins</strong><br>Airport pushpins showing codes, full names, and FlightAware links.</sub>
+    </td>
+  </tr>
+</table>
 
 ---
 
