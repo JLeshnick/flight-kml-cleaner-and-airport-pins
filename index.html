@@ -132,7 +132,7 @@
       max-width: 960px;
       width: 100%;
       margin: 0 auto;
-      padding: 1.5rem 1.5rem 1rem 1.5rem;
+      padding: 1.5rem 1.5rem 1.5rem 1.5rem;
       flex: 1;
     }
 
@@ -192,7 +192,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 1.5rem;
-      margin-bottom: 1.25rem;
+      margin-bottom: 2rem;
     }
 
     .card h2 {
@@ -220,12 +220,12 @@
     }
 
     .sub-tab-btn {
-      padding: 0.35rem 0.85rem;
+      padding: 0.4rem 0.9rem;
       border: none;
       background: transparent;
       color: var(--text-muted);
       font-family: inherit;
-      font-size: 0.8rem;
+      font-size: 0.825rem;
       font-weight: 600;
       border-radius: 6px;
       cursor: pointer;
@@ -407,7 +407,7 @@
       margin-top: 0.85rem;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 0.65rem 0.85rem;
+      padding: 0.75rem 0.85rem;
       background: var(--bg-input);
     }
 
@@ -429,7 +429,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.4rem;
-      max-height: 100px;
+      max-height: 110px;
       overflow-y: auto;
     }
 
@@ -462,16 +462,37 @@
       color: var(--text-muted);
     }
 
-    /* Image Gallery Showcase */
+    /* Always-Visible Output Gallery Section */
+    .output-gallery-section {
+      margin-top: 2.5rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+
+    .output-gallery-header {
+      margin-bottom: 1rem;
+    }
+
+    .output-gallery-header h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-bottom: 0.2rem;
+    }
+
+    .output-gallery-header p {
+      font-size: 0.825rem;
+      color: var(--text-muted);
+    }
+
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1.25rem;
-      margin-top: 1rem;
     }
 
     .gallery-card {
-      background: var(--bg-body);
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
@@ -487,7 +508,7 @@
 
     .gallery-card img {
       width: 100%;
-      height: 190px;
+      height: 170px;
       object-fit: cover;
       display: block;
       border-bottom: 1px solid var(--border);
@@ -498,7 +519,7 @@
     }
 
     .gallery-card h4 {
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       font-weight: 600;
       color: var(--text-heading);
       margin-bottom: 0.15rem;
@@ -508,7 +529,7 @@
     }
 
     .gallery-card p {
-      font-size: 0.8rem;
+      font-size: 0.775rem;
       color: var(--text-muted);
     }
 
@@ -570,7 +591,6 @@
     <div class="tab-nav">
       <button class="tab-btn active" id="tab-cleaner-btn" onclick="switchTab('cleaner')">KML Track Cleaner</button>
       <button class="tab-btn" id="tab-pins-btn" onclick="switchTab('pins')">Airport Pin Generator</button>
-      <button class="tab-btn" id="tab-previews-btn" onclick="switchTab('previews')">Output Examples</button>
     </div>
 
     <!-- PANEL 1: KML TRACK CLEANER -->
@@ -614,38 +634,46 @@
 
         <!-- SUB TABS -->
         <div class="sub-tab-nav">
-          <button class="sub-tab-btn active" id="subtab-codes-btn" onclick="switchSubTab('codes')">Type Airport Codes</button>
-          <button class="sub-tab-btn" id="subtab-scan-btn" onclick="switchSubTab('scan')">Scan KML Flight Logs</button>
+          <button class="sub-tab-btn active" id="subtab-codes-btn" onclick="switchSubTab('codes')">Enter Airport Codes</button>
+          <button class="sub-tab-btn" id="subtab-scan-btn" onclick="switchSubTab('scan')">Auto-Extract from Flight KMLs</button>
         </div>
 
-        <!-- SUB PANEL 1: TYPE CODES -->
+        <!-- SUB PANEL 1: ENTER AIRPORT CODES -->
         <div class="sub-panel active" id="subpanel-codes">
           <div class="field">
             <label for="airport-codes-input">Airport Codes (IATA or ICAO)</label>
             <input type="text" id="airport-codes-input" placeholder="e.g. BNA, DFW, LHR, FCO, CIA" oninput="renderAirportPreview()">
-            <p class="hint">Enter 3 or 4 letter codes separated by spaces or commas. Resolves ~29,000 global airports.</p>
+            <p class="hint">Enter 3 or 4 letter airport codes separated by spaces or commas. Resolves ~29,000 global airports.</p>
           </div>
-        </div>
 
-        <!-- SUB PANEL 2: SCAN KMLS -->
-        <div class="sub-panel" id="subpanel-scan">
-          <div class="field">
-            <label>Scan KML Files for Visited Airports</label>
-            <div class="dropzone" onclick="document.getElementById('scan-file-input').click()" style="padding: 1.5rem 1rem;">
-              <p class="drop-title">Drop flight KML files here to auto-detect airport codes</p>
-              <p class="drop-sub">or click to browse flight files from your computer</p>
-              <input type="file" id="scan-file-input" style="display: none;" accept=".kml" multiple onchange="handleScanFiles(this.files)">
+          <!-- MATCHED AIRPORTS PREVIEW TRAY (STRICTLY ISOLATED TO MANUAL ENTRY SUB-TAB) -->
+          <div id="airport-preview-container" class="preview-box">
+            <div class="preview-header">
+              <span id="preview-count-label">Matched Airports</span>
+            </div>
+            <div class="chips-grid" id="airport-chips-list">
+              <span class="preview-placeholder">Type airport codes above to preview matched airports.</span>
             </div>
           </div>
         </div>
 
-        <!-- MATCHED AIRPORTS PREVIEW TRAY (SHARED) -->
-        <div id="airport-preview-container" class="preview-box">
-          <div class="preview-header">
-            <span id="preview-count-label">Matched Airports</span>
+        <!-- SUB PANEL 2: AUTO-EXTRACT FROM KML LOGS -->
+        <div class="sub-panel" id="subpanel-scan">
+          <div class="field">
+            <label>Extract Airport Pins from KML Track Files</label>
+            <div class="dropzone" onclick="document.getElementById('scan-file-input').click()" style="padding: 1.5rem 1rem;">
+              <p class="drop-title">Drop flight KML files here to auto-detect airport codes</p>
+              <p class="drop-sub">Drop one or multiple Flightradar24 / FlightAware KML logs to extract visited airports</p>
+              <input type="file" id="scan-file-input" style="display: none;" accept=".kml" multiple onchange="handleScanFiles(this.files)">
+            </div>
           </div>
-          <div class="chips-grid" id="airport-chips-list">
-            <span class="preview-placeholder">Type airport codes above or drop flight KMLs to preview matches.</span>
+
+          <!-- EXTRACTED AIRPORTS PREVIEW TRAY (STRICTLY ISOLATED TO KML EXTRACT SUB-TAB) -->
+          <div id="scan-preview-container" class="preview-box" style="display: none;">
+            <div class="preview-header">
+              <span id="scan-preview-count-label">Detected Airports</span>
+            </div>
+            <div class="chips-grid" id="scan-chips-list"></div>
           </div>
         </div>
 
@@ -655,27 +683,27 @@
       </div>
     </div>
 
-    <!-- PANEL 3: OUTPUT EXAMPLES -->
-    <div class="panel" id="panel-previews">
-      <div class="card">
-        <h2>Google Earth Output Examples</h2>
-        <p class="description">Click any preview image below to view full high-resolution map outputs in a new tab.</p>
-        <div class="gallery-grid">
-          <a href="images/google_earth_map_overview.jpeg" target="_blank" rel="noopener" class="gallery-card">
-            <img src="images/google_earth_map_overview.jpeg" alt="Google Earth Flight Routes and Airport Pins">
-            <div class="caption">
-              <h4><span>Flight Tracks & Airport Pins</span> <span class="zoom-hint">Click to enlarge ↗</span></h4>
-              <p>Cleaned 3D flight lines combined with styled airport pushpins in Google Earth.</p>
-            </div>
-          </a>
-          <a href="images/airport_pins_sample.jpeg" target="_blank" rel="noopener" class="gallery-card">
-            <img src="images/airport_pins_sample.jpeg" alt="Google Earth Visited Airport Pins Map">
-            <div class="caption">
-              <h4><span>Visited Airport Pushpins</span> <span class="zoom-hint">Click to enlarge ↗</span></h4>
-              <p>Airport placemarks formatted with full names, locations, and FlightAware balloon links.</p>
-            </div>
-          </a>
-        </div>
+    <!-- ALWAYS-VISIBLE GOOGLE EARTH PREVIEWS (BOTTOM SECTION) -->
+    <div class="output-gallery-section">
+      <div class="output-gallery-header">
+        <h3>Google Earth Output Previews</h3>
+        <p>Click any map image below to view full high-resolution screenshot in a new tab</p>
+      </div>
+      <div class="gallery-grid">
+        <a href="images/google_earth_map_overview.jpeg" target="_blank" rel="noopener" class="gallery-card">
+          <img src="images/google_earth_map_overview.jpeg" alt="Google Earth Flight Routes and Airport Pins">
+          <div class="caption">
+            <h4><span>Flight Tracks & Airport Pins</span> <span class="zoom-hint">Click to enlarge ↗</span></h4>
+            <p>Cleaned 3D flight lines combined with styled airport pushpins in Google Earth.</p>
+          </div>
+        </a>
+        <a href="images/airport_pins_sample.jpeg" target="_blank" rel="noopener" class="gallery-card">
+          <img src="images/airport_pins_sample.jpeg" alt="Google Earth Visited Airport Pins Map">
+          <div class="caption">
+            <h4><span>Visited Airport Pushpins</span> <span class="zoom-hint">Click to enlarge ↗</span></h4>
+            <p>Airport placemarks formatted with full names, locations, and FlightAware balloon links.</p>
+          </div>
+        </a>
       </div>
     </div>
   </main>
@@ -724,7 +752,7 @@
 
     initTheme();
 
-    // Tab Switcher
+    // Main Tab Switcher
     function switchTab(tabName) {
       document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -1026,7 +1054,7 @@ ${placemarksXml.join("\n")}
 
       chipsList.innerHTML = '';
       if (codes.length === 0) {
-        chipsList.innerHTML = '<span class="preview-placeholder">Type airport codes above or drop flight KMLs to preview matches.</span>';
+        chipsList.innerHTML = '<span class="preview-placeholder">Type airport codes above to preview matched airports.</span>';
         countLabel.textContent = 'Matched Airports';
         return;
       }
@@ -1053,7 +1081,7 @@ ${placemarksXml.join("\n")}
     function generateAirportPins() {
       const codes = parseInputCodes();
       if (codes.length === 0) {
-        alert("Please enter at least one airport code (e.g. BNA, DFW, LHR).");
+        alert("Please enter or auto-detect at least one airport code (e.g. BNA, DFW, LHR).");
         return;
       }
 
@@ -1121,7 +1149,32 @@ ${placemarksXml.join("\n")}
       if (detectedCodes.size > 0) {
         const existingCodes = parseInputCodes();
         const allCodes = new Set([...existingCodes, ...detectedCodes]);
-        document.getElementById('airport-codes-input').value = Array.from(allCodes).join(', ');
+        const codeArray = Array.from(allCodes);
+        document.getElementById('airport-codes-input').value = codeArray.join(', ');
+        
+        // Render extracted chips inside the scan sub-panel
+        const scanPreviewContainer = document.getElementById('scan-preview-container');
+        const scanChipsList = document.getElementById('scan-chips-list');
+        const scanCountLabel = document.getElementById('scan-preview-count-label');
+
+        scanChipsList.innerHTML = '';
+        scanPreviewContainer.style.display = 'block';
+
+        let foundCount = 0;
+        codeArray.forEach(code => {
+          const ap = findAirport(code);
+          const chip = document.createElement('div');
+          chip.className = 'chip';
+          if (ap) {
+            foundCount++;
+            chip.innerHTML = `<span class="chip-code">${code}</span> <span class="chip-name">${ap.name || ''} (${ap.city || ap.country})</span>`;
+          } else {
+            chip.innerHTML = `<span class="chip-code" style="color: #ef4444">${code}</span> <span class="chip-name">Not found</span>`;
+          }
+          scanChipsList.appendChild(chip);
+        });
+
+        scanCountLabel.textContent = `Extracted ${foundCount} Airport Codes from KML Logs`;
         renderAirportPreview();
       } else {
         alert("No valid airport codes detected in the uploaded KML files.");
