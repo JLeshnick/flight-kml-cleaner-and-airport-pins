@@ -440,6 +440,20 @@
       color: var(--badge-text);
     }
 
+    /* 2-Column Grid for Pin Generator Tab */
+    .pins-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    @media (max-width: 640px) {
+      .pins-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* Chips List */
     .chips-grid {
       display: flex;
@@ -589,26 +603,31 @@
         <h2>Generate Airport Pin Map</h2>
         <p class="description">Generate styled Google Earth pushpin Placemarks for any airport code, matching FlightAware styling with live activity links.</p>
 
-        <div class="field">
-          <label for="airport-codes-input">Airport Codes (IATA or ICAO)</label>
-          <input type="text" id="airport-codes-input" placeholder="e.g. BNA, DFW, LHR, FCO, CIA" oninput="renderAirportPreview()">
-          <p class="hint">Enter 3 or 4 letter codes separated by spaces or commas. Resolves ~29,000 global airports.</p>
-        </div>
+        <div class="pins-grid">
+          <!-- Left: Manual Input -->
+          <div class="field" style="margin-bottom: 0;">
+            <label for="airport-codes-input">Airport Codes (IATA or ICAO)</label>
+            <input type="text" id="airport-codes-input" placeholder="e.g. BNA, DFW, LHR, FCO, CIA" oninput="renderAirportPreview()">
+            <p class="hint">Enter 3 or 4 letter codes separated by spaces or commas.</p>
+          </div>
 
-        <div class="field" style="margin-top: 1.5rem;">
-          <label>Scan KML Files for Visited Airports</label>
-          <div class="dropzone" onclick="document.getElementById('scan-file-input').click()" style="padding: 1.25rem;">
-            <p class="drop-title" style="font-size: 0.875rem;">Drop flight KML files here to auto-detect airport codes</p>
-            <input type="file" id="scan-file-input" style="display: none;" accept=".kml" multiple onchange="handleScanFiles(this.files)">
+          <!-- Right: Auto-Scan Dropzone -->
+          <div class="field" style="margin-bottom: 0;">
+            <label>Scan KML Files for Visited Airports</label>
+            <div class="dropzone" onclick="document.getElementById('scan-file-input').click()" style="padding: 0.85rem 1rem;">
+              <p class="drop-title" style="font-size: 0.85rem;">Drop flight KMLs to auto-detect codes</p>
+              <p class="drop-sub" style="font-size: 0.75rem;">or click to browse flight files</p>
+              <input type="file" id="scan-file-input" style="display: none;" accept=".kml" multiple onchange="handleScanFiles(this.files)">
+            </div>
           </div>
         </div>
 
-        <div id="airport-preview-container" style="display: none; margin-top: 1.25rem;">
-          <label id="preview-count-label">Matched Airports</label>
+        <div id="airport-preview-container" style="display: none; margin-top: 1rem;">
+          <label id="preview-count-label" style="font-size: 0.8rem; font-weight: 600;">Matched Airports</label>
           <div class="chips-grid" id="airport-chips-list"></div>
         </div>
 
-        <div style="margin-top: 1.75rem;">
+        <div style="margin-top: 1.25rem;">
           <button class="btn btn-accent btn-full" onclick="generateAirportPins()">Generate Airport Pin KML</button>
         </div>
       </div>
