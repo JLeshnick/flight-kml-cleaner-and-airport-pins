@@ -13,8 +13,10 @@ Run both tools directly in your browser without installing Python or terminal co
 👉 **[Launch Flight KML Tools Web App](https://jleshnick.github.io/flight-kml-cleaner-and-airport-pins/)**
 
 - ⚡ **100% Client-Side & Private**: Your flight files are processed instantly in your browser and are **never** uploaded to any server.
-- ✈️ **KML Track Cleaner**: Drag and drop Flightradar24 or FlightAware `.kml` files to strip point clutter, shrink file size by up to 95%, and automatically append the **date & departure time (UTC)** to the folder name in Google Earth (e.g. `AA1667 (2026-08-11 14:30 UTC)`) and filename (e.g. `AA1667_2026-08-11_1430_UTC.kml`).
-- 📍 **Airport Pin Generator**: Type any airport code (e.g. `BNA, DFW, LHR, FCO`) or drop flight KML files to automatically detect and pin visited airports.
+- ✈️ **KML Track Cleaner**: Drag and drop Flightradar24 or FlightAware `.kml` files to strip point clutter, shrink file size by up to 95%, and automatically append the **date & departure time (UTC)** to the folder name in Google Earth (e.g., `AA1667 (2026-08-11 14:30 UTC)`) and output filename (e.g., `AA1667_2026-08-11_1430_UTC.kml`).
+- 📍 **Airport Pin Generator**: 
+  - **Enter Airport Codes**: Type any 3 or 4-letter IATA/ICAO airport codes (e.g., `BNA, DFW, LHR, FCO`) to instantly preview matched airport names, cities, and countries.
+  - **Auto-Extract from Flight KMLs**: Drop one or multiple flight KML logs to automatically extract origin and destination airport codes.
 - 📱 **Cross-Platform**: Works on Mac, PC, Chromebooks, iPads, and mobile browsers.
 
 ---
@@ -75,7 +77,7 @@ For users who prefer batch processing entire directories via terminal, automated
 
 ### 1. `clean_fr24_kml.py` — Flight Track Optimizer
 
-Strips out thousands of high-density `Route` Placemark points while preserving 3D continuous flight lines, metadata, and styling. Automatically tags folder names with date and time (e.g. `AA1667 (2026-08-11 14:30)`).
+Strips out thousands of high-density `Route` Placemark points while preserving 3D continuous flight lines, metadata, and styling. Automatically tags folder names with date and time (e.g. `AA1667 (2026-08-11 14:30 UTC)`).
 
 ```bash
 # Clean a single file (overwrites in-place):
@@ -114,18 +116,20 @@ python3 generate_airport_pins.py --scan ~/Downloads/*.kml -o Scanned_Airports.km
 flight-kml-tools/
 │
 ├── index.html                 # Single-page GitHub Pages Web App
-├── airports_db.js             # Offline bundled dataset (~29,000 airports)
+├── airports_db.js             # Offline minified dataset (~29,000 global airports)
 ├── clean_fr24_kml.py          # Python KML flight path optimizer CLI
 ├── generate_airport_pins.py   # Python airport pin generator CLI
-├── README.md                  # Documentation and tutorial
-└── docs/
-    └── images/
-        ├── web_app_cleaner.png        # (Web App KML cleaner screenshot placeholder)
-        ├── web_app_pins.png           # (Web App pin generator screenshot placeholder)
-        ├── google_earth_map_overview.png
-        ├── fr24_export_tutorial.png
-        └── airport_pin_balloon.png
+├── README.md                  # Comprehensive documentation and tutorial
+└── images/
+    ├── google_earth_map_overview.jpeg   # Preview 1: 3D Flight paths & Airport pushpins
+    └── airport_pins_sample.jpeg        # Preview 2: Visited Airport pushpins with FlightAware links
 ```
+
+---
+
+## 👤 Author & Credits
+
+Created by **[Joshua Leshnick](https://github.com/JLeshnick)**
 
 ---
 
