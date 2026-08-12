@@ -5,7 +5,6 @@ A collection of lightweight browser & Python utilities for flight enthusiasts, f
 > 🚀 **Live Web App:** [https://jleshnick.github.io/flight-kml-cleaner-and-airport-pins/](https://jleshnick.github.io/flight-kml-cleaner-and-airport-pins/)
 
 ![Flight KML Tools Web App Preview](images/page_preview.png)
-*Flight KML Tools web interface in dark mode.*
 
 ---
 
